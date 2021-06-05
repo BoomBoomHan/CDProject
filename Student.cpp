@@ -12,5 +12,9 @@ Student::Student(const std::string _stuID, const std::string _name, const bool _
 
 Student::~Student()
 {
-
+	stuID = '\0';
+	name = '\0';
+	sex = 0;
+	age = 0;
+	delete selectedProblem;
 }
