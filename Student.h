@@ -15,5 +15,6 @@ private:
 public:
 	Student(const std::string, const std::string, const bool, const unsigned int, const Problem*);
 	~Student();
+	std::string GetID();
 };
 

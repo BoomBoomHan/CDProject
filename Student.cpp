@@ -18,3 +18,8 @@ Student::~Student()
 	age = 0;
 	delete selectedProblem;
 }
+
+std::string Student::GetID()
+{
+	return stuID;
+}

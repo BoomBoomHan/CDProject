@@ -10,10 +10,6 @@ struct List
 	void AddOnHead(const T&);
 	void AddOnTail(const T&);
 	void Delete(int index);
-	void Check<Problem>()
-	{
-
-	}
 };
 
 
