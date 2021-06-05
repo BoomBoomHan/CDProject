@@ -1,5 +1,4 @@
 #pragma once
-#include "Problem.h"
 #include <string>
 
 class Student
@@ -11,10 +10,11 @@ private:
 	std::string name;
 	bool sex;//1Ϊ�У�0ΪŮ
 	unsigned int age;
-	Problem* selectedProblem;
+	class Problem* selectedProblem;
 public:
 	Student(const std::string, const std::string, const bool, const unsigned int, const Problem*);
 	~Student();
 	std::string GetID();
+	std::string Output();
 };
 

@@ -21,7 +21,13 @@
     <ClInclude Include="Student.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="List.h">
+    <ClInclude Include="BBHList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionLibrary.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,10 +38,16 @@
     <ClCompile Include="Student.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>头文件</Filter>
+    <ClCompile Include="BBHList.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="List.cpp">
+    <ClCompile Include="System.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionLibrary.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

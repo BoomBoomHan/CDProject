@@ -1,4 +1,5 @@
 #include "Student.h"
+#include "Problem.h"
 
 Student::Student(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const Problem* _prob)
 	:stuID(_stuID),
@@ -22,4 +23,12 @@ Student::~Student()
 std::string Student::GetID()
 {
 	return stuID;
+}
+
+std::string Student::Output()
+{
+	std::string result;
+	result += "学号:" + stuID + "\n姓名:" + name + "\n性别:";
+	result += sex ? "男" : "女";
+	return result;
 }
