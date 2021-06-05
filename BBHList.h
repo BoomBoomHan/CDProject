@@ -27,4 +27,8 @@ struct BBHList//用于存储学生及课设题目的表单
 	{
 		List.erase(List.begin() + index);
 	}
+	~BBHList()//释放所有元素
+	{
+		List.clear();
+	}
 };
