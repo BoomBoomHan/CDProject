@@ -146,7 +146,6 @@
     <ClInclude Include="System.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BBHList.cpp" />
     <ClCompile Include="FunctionLibrary.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Problem.cpp" />

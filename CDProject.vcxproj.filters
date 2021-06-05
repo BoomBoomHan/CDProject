@@ -38,9 +38,6 @@
     <ClCompile Include="Student.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="BBHList.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="System.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
