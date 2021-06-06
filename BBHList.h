@@ -9,37 +9,47 @@ template<typename T>
 struct BBHList//用于存储学生及课设题目的表单
 {
 private:
-	std::vector<T> List;
+	std::vector<T> List;//表单
 
 public:
 	BBHList()
 	{
 		
 	}
-	unsigned int GetSize()//获取表单元素的个数
+
+	//获取表单元素的个数
+	unsigned int GetSize()
 	{
 		unsigned int size = 0;
 		size = List.size();
 		return size;
 	}
-	void AddElement(const T& element)//在尾部添加元素
+
+	//在尾部添加元素
+	void AddElement(const T& element)
 	{
 		List.push_back(element);
 	}
-	void DeleteElement(unsigned int index)//删除指定元素
+
+	//删除指定元素
+	void DeleteElement(unsigned int index)
 	{
 		List.erase(List.begin() + index);
 	}
-	~BBHList()//释放所有元素
+
+	//保存并释放所有元素
+	~BBHList()
 	{
 		List.clear();
 	}
-	const T operator [](unsigned int index)//获取一个元素
+
+	//获取第i个元素
+	T& operator [](const unsigned int index)
 	{
-		if (FunctionLibrary::IsInRange(index, 0u, GetSize(), true))
+		if (FunctionLibrary::IsInRange(index, 0u, GetSize() - 1, true))
 		{
 			return List[index];
 		}
-		return 0;
+		return List[0];
 	}
 };
