@@ -2,6 +2,7 @@
 #include <iostream>
 #include "BBHList.h"
 #include "Student.h"
+#include "Problem.h"
 
 int main()
 {
@@ -11,12 +12,12 @@ int main()
 	list.AddElement(6.14);
 	for (unsigned int i = 0; i < list.GetSize(); i++)
 	{
-		std::cout << list.List[i] << std::endl;
+		std::cout << list[i] << std::endl;
 	}
 	list.DeleteElement(1);
 	for (unsigned int i = 0; i < list.GetSize(); i++)
 	{
-		std::cout << list.List[i] << std::endl;
+		std::cout << list[i] << std::endl;
 	}
 	return 0;
 }

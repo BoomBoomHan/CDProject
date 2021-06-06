@@ -1,14 +1,17 @@
 #pragma once
 #include "Problem.h"
 #include "Student.h"
+#include "FunctionLibrary.h"
 #include <vector>
 
 //由于模板类比较特殊,这个类的定义只有.h而无.cpp文件，函数的声明与定义都写在.h内
 template<typename T>
 struct BBHList//用于存储学生及课设题目的表单
 {
+private:
 	std::vector<T> List;
 
+public:
 	BBHList()
 	{
 		
@@ -30,5 +33,13 @@ struct BBHList//用于存储学生及课设题目的表单
 	~BBHList()//释放所有元素
 	{
 		List.clear();
+	}
+	const T operator [](unsigned int index)//获取一个元素
+	{
+		if (FunctionLibrary::IsInRange(index, 0u, GetSize(), true))
+		{
+			return List[index];
+		}
+		return 0;
 	}
 };
