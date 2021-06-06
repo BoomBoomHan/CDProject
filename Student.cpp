@@ -20,9 +20,48 @@ Student::~Student()
 	delete selectedProblem;
 }
 
-std::string Student::GetID()
+std::string Student::GetID() const
 {
 	return stuID;
+}
+
+std::string Student::GetID() 
+{
+	return stuID;
+}
+
+Problem* Student::GetProblem() const
+{
+	return selectedProblem;
+}
+
+Problem* Student::GetProblem()
+{
+	return const_cast<Problem*>(static_cast<const Student&>(*this).GetProblem());
+}
+
+bool Student::SetProblem(const Problem* prob) const
+{
+	if (!prob)
+	{
+		return false;
+	}
+	selectedProblem->nowNum--;
+	prob->nowNum++;
+	selectedProblem = const_cast<Problem*>(prob);
+	return true;
+}
+
+bool Student::SetProblem(const Problem* prob)
+{
+	if (!prob)
+	{
+		return false;
+	}
+	selectedProblem->nowNum--;
+	prob->nowNum++;
+	selectedProblem = const_cast<Problem*>(prob);
+	return true;
 }
 
 std::string Student::Output()
@@ -32,4 +71,14 @@ std::string Student::Output()
 	result += sex ? "ÄÐ" : "Å®";
 	result += selectedProblem->Output(OutputMethod::Short);
 	return result;
+}
+
+bool Student::operator ==(const Student& stu) const
+{
+	return (stuID == stu.GetID()) ? true : false;
+}
+
+bool Student::operator ==(const Student& stu)
+{
+	return (stuID == stu.GetID()) ? true : false;
 }

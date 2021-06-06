@@ -22,6 +22,11 @@ Problem::~Problem()
 	nowNum = 0;
 }
 
+std::string Problem::GetID() const
+{
+	return id;
+}
+
 std::string Problem::GetID()
 {
 	return id;
@@ -30,6 +35,16 @@ std::string Problem::GetID()
 std::string Problem::GetTitle()
 {
 	return title;
+}
+
+unsigned int Problem::GetMaxNumber()
+{
+	return maxNum;
+}
+
+unsigned int Problem::GetNowNumber()
+{
+	return nowNum;
 }
 
 std::string Problem::Output(OutputMethod method)
@@ -49,4 +64,14 @@ std::string Problem::Output(OutputMethod method)
 		break;
 	}
 	return result;
+}
+
+bool Problem::operator ==(const Problem& prob) const
+{
+	return (id == prob.GetID()) ? true : false;
+}
+
+bool Problem::operator ==(const Problem& prob)
+{
+	return (id == prob.GetID()) ? true : false;
 }

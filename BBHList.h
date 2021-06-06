@@ -21,14 +21,19 @@ public:
 	unsigned int GetSize()
 	{
 		unsigned int size = 0;
-		size = List.size();
+		size = (unsigned int)(List.size());
 		return size;
 	}
 
-	//在尾部添加元素
-	void AddElement(const T& element)
+	//在尾部添加元素,若成功则返回真
+	bool AddElement(const T& element)
 	{
-		List.push_back(element);
+		const bool isUnique = CheckUnique(element);
+		if (isUnique)
+		{
+			List.push_back(element);
+		}
+		return isUnique;
 	}
 
 	//删除指定元素
@@ -51,5 +56,18 @@ public:
 			return List[index];
 		}
 		return List[0];
+	}
+
+	//检查是否有相同元素,若无则返回真
+	bool CheckUnique(const T& element)
+	{
+		for (unsigned int i = 0; i < GetSize(); i++)
+		{
+			if (element == List[i])
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 };
