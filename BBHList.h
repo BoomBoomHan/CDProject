@@ -36,10 +36,15 @@ public:
 		return isUnique;
 	}
 
-	//删除指定元素
-	void DeleteElement(unsigned int index)
+	//删除指定元素,若成功则返回真
+	bool DeleteElement(unsigned int index)
 	{
+		if (!FunctionLibrary::IsInRange(index, 0u, GetSize() - 1, true))
+		{
+			return false;
+		}
 		List.erase(List.begin() + index);
+		return true;
 	}
 
 	//保存并释放所有元素
