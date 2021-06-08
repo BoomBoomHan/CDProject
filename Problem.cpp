@@ -56,9 +56,9 @@ std::string Problem::Output(OutputMethod method)
 		result = "编号:" + id + "\n标题:" + title + "\n指导老师:" + teacherName + "\n要求:" + requirement
 			+ "\n最大选题人数:" + FunctionLibrary::ToString<unsigned int>(maxNum) + "\n已选人数:" + FunctionLibrary::ToString<unsigned int>(nowNum);
 		break;
-	case OutputMethod::IgnoreID:
-		result = id + ".";
 	case OutputMethod::Short:
+		result = id + ".";
+	case OutputMethod::IgnoreID:
 	default:
 		result += title;
 		break;

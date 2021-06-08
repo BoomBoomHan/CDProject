@@ -1,6 +1,4 @@
 #pragma once
-#include "Problem.h"
-#include "Student.h"
 #include "FunctionLibrary.h"
 #include <vector>
 

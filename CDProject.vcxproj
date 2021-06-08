@@ -204,6 +204,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BBHList.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="FunctionLibrary.h" />
     <ClInclude Include="Problem.h" />
     <ClInclude Include="Student.h" />

@@ -1,23 +1,18 @@
 #pragma once
 #include <string>
 #include "Student.h"
-
-enum class OutputMethod
-{
-	IgnoreID,
-	Short,
-	Complete
-};
+#include "Enums.h"
 
 class Problem
 {
 private:
-	const Problem operator =(const Problem&) { return *this; }//不可赋值
-	std::string id;//编号
-	std::string title;//标题
-	std::string teacherName;//指导老师
-	std::string requirement;//要求
-	unsigned int maxNum;//最大选课人数
+	//不可赋值
+	const Problem operator =(const Problem&) { return *this; }
+	mutable std::string id;//编号
+	mutable std::string title;//标题
+	mutable std::string teacherName;//指导老师
+	mutable std::string requirement;//要求
+	mutable unsigned int maxNum;//最大选课人数
 	mutable unsigned int nowNum;//已选人数
 public:
 	//编号 标题 指导老师 要求 最大人数

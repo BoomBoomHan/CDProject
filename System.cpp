@@ -1,4 +1,6 @@
 #include "System.h"
+#include "Student.h"
+#include "Problem.h"
 
 bool System::isSystemActive = false;
 
@@ -37,4 +39,70 @@ bool System::AddStudent(const std::string _stuID, const std::string _name, const
 		return false;
 	}
 	return studentList->AddElement(Student(_stuID, _name, _sex, _age, _prob));
+}
+
+bool System::ChangeStudentInfo(const Student& targetStu, const std::string str, StuStringInfo targetInfo)
+{
+	if (!isThisActive)
+	{
+		return false;
+	}
+	switch (targetInfo)
+	{
+	case StuStringInfo::StuID:
+		targetStu.stuID = str;
+		return true;
+	case StuStringInfo::Name:
+		targetStu.name = str;
+		return true;
+	default:
+		return false;
+	}
+}
+
+bool System::ChangeStudentInfo(const Student& targetStu, const bool sex)
+{
+	if (!isThisActive)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool System::ChangeStudentInfo(const Student& targetStu, const unsigned int age)
+{
+	if (!isThisActive)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool System::ChangeStudentInfo(const Student& targetStu, const Problem* prob)
+{
+	if ((!isThisActive) || (!prob))
+	{
+		return false;
+	}
+	return targetStu.SetProblem(prob);
+}
+
+std::string System::OutputStu()
+{
+	std::string result;
+	for (unsigned int i = 0; i < studentList->GetSize(); i++)
+	{
+		result += (*studentList)[i].Output() + "\n";
+	}
+	return result;
+}
+
+std::string System::OutputProb()
+{
+	std::string result;
+	for (unsigned int i = 0; i < problemList->GetSize(); i++)
+	{
+		result += (*problemList)[i].Output(OutputMethod::Short) + "\n";
+	}
+	return result;
 }

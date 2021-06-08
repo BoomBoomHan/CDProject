@@ -1,17 +1,16 @@
 #pragma once
 #include <string>
+#include "System.h"
 
 class Student
 {
 private:
-	//不可拷贝
-	Student(const Student&);
 	//不可赋值
 	const Student operator =(const Student&) { return *this; }
-	std::string stuID;//学号
-	std::string name;//姓名
-	bool sex;//1为男，0为女
-	unsigned int age;//年龄
+	mutable std::string stuID;//学号
+	mutable std::string name;//姓名
+	mutable bool sex;//1为男，0为女
+	mutable unsigned int age;//年龄
 	mutable class Problem* selectedProblem;//选择的题目
 public:
 	//学号 姓名 性别(1男0女) 年龄 选择的题目
@@ -36,5 +35,9 @@ public:
 	bool operator ==(const Student&) const;
 	//若两个学生学号相同则返回真
 	bool operator ==(const Student&);
+
+	friend bool System::ChangeStudentInfo(const Student&, const std::string, StuStringInfo);
+	friend bool System::ChangeStudentInfo(const Student&, const bool);
+	friend bool System::ChangeStudentInfo(const Student&, const unsigned int);
 };
 

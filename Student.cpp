@@ -69,7 +69,15 @@ std::string Student::Output()
 	std::string result;
 	result += "学号:" + stuID + "\n姓名:" + name + "\n性别:";
 	result += sex ? "男" : "女";
-	result += selectedProblem->Output(OutputMethod::Short);
+	result += "\n选择题目:";
+	if (selectedProblem)
+	{
+		result += selectedProblem->Output(OutputMethod::Short);
+	}
+	else
+	{
+		result += "暂无";
+	}
 	return result;
 }
 
