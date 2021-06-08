@@ -39,5 +39,9 @@ public:
 	friend bool Student::SetProblem(const Problem*) const;
 	//此友元函数是Student类的成员函数
 	friend bool Student::SetProblem(const Problem*);
+	//此友元函数是System类的成员函数
+	friend bool System::ChangeProblemInfo(const Problem*, const std::string, ProbStringInfo);
+	//此友元函数是System类的成员函数
+	friend bool System::ChangeProblemInfo(const Problem*, const unsigned int);
 };
 

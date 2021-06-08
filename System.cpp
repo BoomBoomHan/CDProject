@@ -7,7 +7,9 @@ bool System::isSystemActive = false;
 System::System()
 	:isThisActive(false),
 	studentList(new BBHList<Student>),
-	problemList(new BBHList<Problem>)
+	problemList(new BBHList<Problem>),
+	stuList(*studentList),
+	probList(*problemList)
 {
 	if (!isSystemActive)
 	{
@@ -41,50 +43,95 @@ bool System::AddStudent(const std::string _stuID, const std::string _name, const
 	return studentList->AddElement(Student(_stuID, _name, _sex, _age, _prob));
 }
 
-bool System::ChangeStudentInfo(const Student& targetStu, const std::string str, StuStringInfo targetInfo)
+bool System::ChangeProblemInfo(const Problem* prob, const std::string str, ProbStringInfo targetInfo)
 {
-	if (!isThisActive)
+	if ((!isThisActive) || !(prob))
 	{
 		return false;
 	}
 	switch (targetInfo)
 	{
-	case StuStringInfo::StuID:
-		targetStu.stuID = str;
+	case ProbStringInfo::ID:
+		prob->id = str;
 		return true;
-	case StuStringInfo::Name:
-		targetStu.name = str;
+	case ProbStringInfo::Title:
+		prob->title = str;
+		return true;
+	case ProbStringInfo::TeacherName:
+		prob->teacherName = str;
+		return true;
+	case ProbStringInfo::Requirement:
+		prob->requirement = str;
 		return true;
 	default:
 		return false;
 	}
 }
 
-bool System::ChangeStudentInfo(const Student& targetStu, const bool sex)
+bool System::ChangeProblemInfo(const Problem* prob, const unsigned int max)
 {
-	if (!isThisActive)
+	if ((!isThisActive) || !(prob))
 	{
 		return false;
 	}
+	if (max < prob->nowNum)
+	{
+		return false;
+	}
+	prob->maxNum = max;
 	return true;
 }
 
-bool System::ChangeStudentInfo(const Student& targetStu, const unsigned int age)
+bool System::ChangeStudentInfo(const Student* targetStu, const std::string str, StuStringInfo targetInfo)
 {
-	if (!isThisActive)
+	if (!isThisActive || !(targetStu))
 	{
 		return false;
 	}
+	switch (targetInfo)
+	{
+	case StuStringInfo::StuID:
+		targetStu->stuID = str;
+		return true;
+	case StuStringInfo::Name:
+		targetStu->name = str;
+		return true;
+	default:
+		return false;
+	}
+}
+
+bool System::ChangeStudentInfo(const Student* targetStu, const bool sex)
+{
+	if (!isThisActive || !(targetStu))
+	{
+		return false;
+	}
+	targetStu->sex = sex;
 	return true;
 }
 
-bool System::ChangeStudentInfo(const Student& targetStu, const Problem* prob)
+bool System::ChangeStudentInfo(const Student* targetStu, const unsigned int age)
 {
-	if ((!isThisActive) || (!prob))
+	if (!isThisActive || !(targetStu))
 	{
 		return false;
 	}
-	return targetStu.SetProblem(prob);
+	if (age <= 0)
+	{
+		return false;
+	}
+	targetStu->age = age;
+	return true;
+}
+
+bool System::ChangeStudentInfo(const Student* targetStu, const Problem* prob)
+{
+	if ((!isThisActive) || !(targetStu) || (!prob))
+	{
+		return false;
+	}
+	return targetStu->SetProblem(prob);
 }
 
 std::string System::OutputStu()
@@ -102,7 +149,7 @@ std::string System::OutputProb()
 	std::string result;
 	for (unsigned int i = 0; i < problemList->GetSize(); i++)
 	{
-		result += (*problemList)[i].Output(OutputMethod::Short) + "\n";
+		result += probList[i].Output(OutputMethod::Short) + "\n";
 	}
 	return result;
 }

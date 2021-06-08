@@ -12,6 +12,8 @@ private:
 	mutable bool sex;//1为男，0为女
 	mutable unsigned int age;//年龄
 	mutable class Problem* selectedProblem;//选择的题目
+private:
+	
 public:
 	//学号 姓名 性别(1男0女) 年龄 选择的题目
 	Student(const std::string, const std::string, const bool, const unsigned int, const Problem*);
@@ -25,19 +27,23 @@ public:
 	Problem* GetProblem() const;
 	//获取题目
 	Problem* GetProblem();
-	//设置题目(const)
-	bool SetProblem(const Problem*) const;
-	//设置题目
-	bool SetProblem(const Problem*);
 	//输出为字符串
 	std::string Output();
 	//若两个学生学号相同则返回真(const)
 	bool operator ==(const Student&) const;
 	//若两个学生学号相同则返回真
 	bool operator ==(const Student&);
-
-	friend bool System::ChangeStudentInfo(const Student&, const std::string, StuStringInfo);
-	friend bool System::ChangeStudentInfo(const Student&, const bool);
-	friend bool System::ChangeStudentInfo(const Student&, const unsigned int);
+	//设置题目(const)
+	bool SetProblem(const Problem*) const;
+	//设置题目
+	bool SetProblem(const Problem*);
+	//此友元函数是System类的成员函数
+	friend bool System::ChangeStudentInfo(const Student*, const std::string, StuStringInfo);
+	//此友元函数是System类的成员函数
+	friend bool System::ChangeStudentInfo(const Student*, const bool);
+	//此友元函数是System类的成员函数
+	friend bool System::ChangeStudentInfo(const Student*, const unsigned int);
+	//此友元函数是System类的成员函数
+	friend bool System::ChangeStudentInfo(const Student*, const Problem* b);
 };
 

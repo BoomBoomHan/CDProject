@@ -11,6 +11,9 @@ private:
 private:
 	BBHList<class Student>* studentList;
 	BBHList<class Problem>* problemList;
+private:
+	BBHList<Student>& stuList;
+	BBHList<Problem>& probList;
 
 public:
 	//缺省构造
@@ -21,15 +24,19 @@ public:
 	bool AddProblem(const std::string, const std::string, const std::string, const std::string, const unsigned int);
 	//通过--学号 姓名 性别(1男0女) 年龄 选择的题目--添加学生,当且仅当系统激活时可用,成功时返回真
 	bool AddStudent(const std::string, const std::string, const bool, const unsigned int, const Problem* = nullptr);
-	//修改指定问题的信息,若成功则返回真
+	//修改指定问题的编号、标题、指导老师、要求,若成功则返回真
 	bool ChangeProblemInfo(const Problem*, const std::string, ProbStringInfo);
+
+	//修改指定问题的最大选题人数,若成功则返回真
 	bool ChangeProblemInfo(const Problem*, const unsigned int);
-	bool ChangeProblemInfo(const Student&, const Problem*);
-	//修改指定学生的信息
-	bool ChangeStudentInfo(const Student&, const std::string, StuStringInfo);
-	bool ChangeStudentInfo(const Student&, const bool);
-	bool ChangeStudentInfo(const Student&, const unsigned int);
-	bool ChangeStudentInfo(const Student&, const Problem*);
+	//修改指定学生的学号、姓名,若成功则返回真
+	bool ChangeStudentInfo(const Student*, const std::string, StuStringInfo);
+	//修改指定学生的性别,若成功则返回真
+	bool ChangeStudentInfo(const Student*, const bool);
+	//修改指定学生的年龄,若成功则返回真
+	bool ChangeStudentInfo(const Student*, const unsigned int);
+	//修改指定学生的选题,若成功则返回真
+	bool ChangeStudentInfo(const Student*, const Problem*);
 
 	std::string OutputStu();
 	std::string OutputProb();
