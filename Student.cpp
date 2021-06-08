@@ -8,9 +8,9 @@ Student::Student(const std::string _stuID, const std::string _name, const bool _
 	age(_age),
 	selectedProblem(_prob)
 {
-	if (selectedProblem)
+	if (_prob)
 	{
-		selectedProblem->nowNum++;
+		setProblem(_prob);
 	}
 }
 
@@ -52,7 +52,7 @@ bool Student::setProblem(const Problem* prob) const
 	{
 		return false;
 	}
-	if (!prob->IsFull())
+	if (prob->IsFull())
 	{
 		return false;
 	}
