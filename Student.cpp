@@ -23,7 +23,6 @@ Student::~Student()
 	if (selectedProblem)
 	{
 		selectedProblem->nowNum--;
-		delete selectedProblem;
 	}
 }
 

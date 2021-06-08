@@ -31,11 +31,10 @@ int main()
 	sys->AddProblem("002", "通讯录", "杨喜敏", "无", 66);
 	sys->AddProblem("003", "火车站购票系统", "姜卓睿", "无", 90);
 	sys->AddProblem("666", "新思路签到系统", "朱凯闻", "无", 5);
-	//sys->AddStudent("20210122", "张三", 1, 19, "666");
-	// 	   34行语句会导致崩溃
+	sys->AddStudent("20210122", "张三", 1, 19, "666");
 	//sys->AddStudent("20210122", "张三", 1, 19, "666");
 	cout << sys->OutputProb(OutputMethod::Complete);
-	//cout << sys->OutputStu();
+	cout << sys->OutputStu();
 	/*Problem* p = new Problem("010", "课程设计选题系统", "艾勇", "暂无", 30);
 	Student stu("20210122", "张三", 1, 19, p);*/
 }
