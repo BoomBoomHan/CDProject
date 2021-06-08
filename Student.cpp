@@ -8,7 +8,10 @@ Student::Student(const std::string _stuID, const std::string _name, const bool _
 	age(_age),
 	selectedProblem(const_cast<Problem*>(_prob))
 {
-
+	if (selectedProblem)
+	{
+		selectedProblem->nowNum++;
+	}
 }
 
 Student::~Student()
@@ -17,7 +20,11 @@ Student::~Student()
 	name = '\0';
 	sex = 0;
 	age = 0;
-	delete selectedProblem;
+	if (selectedProblem)
+	{
+		selectedProblem->nowNum--;
+		delete selectedProblem;
+	}
 }
 
 std::string Student::GetID() const
@@ -25,44 +32,45 @@ std::string Student::GetID() const
 	return stuID;
 }
 
-std::string Student::GetID() 
-{
-	return stuID;
-}
+//std::string Student::GetID() 
+//{
+//	return stuID;
+//}
 
 Problem* Student::GetProblem() const
 {
 	return selectedProblem;
 }
 
-Problem* Student::GetProblem()
-{
-	return const_cast<Problem*>(static_cast<const Student&>(*this).GetProblem());
-}
+//Problem* Student::GetProblem()
+//{
+//	return const_cast<Problem*>(static_cast<const Student&>(*this).GetProblem());
+//}
 
-bool Student::SetProblem(const Problem* prob) const
+bool Student::setProblem(const Problem* prob) const
 {
 	if (!prob)
 	{
 		return false;
 	}
+	if (prob->IsFull())
 	selectedProblem->nowNum--;
 	prob->nowNum++;
 	selectedProblem = const_cast<Problem*>(prob);
 	return true;
 }
 
-bool Student::SetProblem(const Problem* prob)
-{
-	if (!prob)
-	{
-		return false;
-	}
-	selectedProblem->nowNum--;
-	prob->nowNum++;
-	selectedProblem = const_cast<Problem*>(prob);
-	return true;
-}
+//bool Student::setProblem(const Problem* prob)
+//{
+//	if (!prob)
+//	{
+//		return false;
+//	}
+//	selectedProblem->nowNum--;
+//	prob->nowNum++;
+//	selectedProblem = const_cast<Problem*>(prob);
+//	return true;
+//}
 
 std::string Student::Output()
 {
@@ -86,7 +94,7 @@ bool Student::operator ==(const Student& stu) const
 	return (stuID == stu.GetID()) ? true : false;
 }
 
-bool Student::operator ==(const Student& stu)
-{
-	return (stuID == stu.GetID()) ? true : false;
-}
+//bool Student::operator ==(const Student& stu)
+//{
+//	return (stuID == stu.GetID()) ? true : false;
+//}

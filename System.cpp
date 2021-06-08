@@ -34,13 +34,24 @@ bool System::AddProblem(const std::string _id, const std::string _title, const s
 	return problemList->AddElement(Problem(_id, _title, _teacherName, _requirement, _maxNum));
 }
 
-bool System::AddStudent(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const Problem* _prob)
+bool System::AddStudent(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const std::string probID)
 {
 	if (!isThisActive)
 	{
 		return false;
 	}
-	return studentList->AddElement(Student(_stuID, _name, _sex, _age, _prob));
+	if (probID == "")
+	{
+		return studentList->AddElement(Student(_stuID, _name, _sex, _age, nullptr));
+	}
+	for (unsigned int i = 0; i < probList.GetSize(); i++)
+	{
+		if (probID == probList[i].GetID() && !probList[i].IsFull())
+		{
+			return studentList->AddElement(Student(_stuID, _name, _sex, _age, &probList[i]));
+		}
+	}
+	return false;
 }
 
 bool System::ChangeProblemInfo(const Problem* prob, const std::string str, ProbStringInfo targetInfo)
@@ -80,6 +91,19 @@ bool System::ChangeProblemInfo(const Problem* prob, const unsigned int max)
 	}
 	prob->maxNum = max;
 	return true;
+}
+
+bool System::DeleteProblem(unsigned int index)
+{
+	if (!isThisActive || (!FunctionLibrary::IsInRange(index, 0u, probList.GetSize() - 1, true)))
+	{
+		return false;
+	}
+	if (probList[index].GetNowNumber())
+	{
+		return false;
+	}
+	return probList.DeleteElement(index);
 }
 
 bool System::ChangeStudentInfo(const Student* targetStu, const std::string str, StuStringInfo targetInfo)
@@ -131,7 +155,16 @@ bool System::ChangeStudentInfo(const Student* targetStu, const Problem* prob)
 	{
 		return false;
 	}
-	return targetStu->SetProblem(prob);
+	return targetStu->setProblem(prob);
+}
+
+bool System::DeleteStudent(const unsigned int index)
+{
+	if (!isThisActive || !FunctionLibrary::IsInRange(index, 0u, stuList.GetSize() - 1, true))
+	{
+		return false;
+	}
+	return stuList.DeleteElement(index);
 }
 
 std::string System::OutputStu()

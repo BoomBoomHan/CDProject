@@ -26,8 +26,10 @@ int main()
 	//}
 	//return 0;
 	System* sys = new System;
+	System* sys1 = new System;
 	sys->AddProblem("010", "课程设计选题系统", "艾勇", "暂无", 30);
-	sys->AddStudent("20210122", "张三", 1, 19);
+	std::cout << sys->AddStudent("20210122", "张三", 1, 19) << std::endl;
+	//sys->AddStudent("20210122", "张三", 1, 19);
 	std::cout << sys->OutputProb();
-	std::cout << sys->OutputStu();
+	//std::cout << sys->OutputStu();
 }

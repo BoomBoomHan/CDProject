@@ -7,8 +7,7 @@ template<typename T>
 struct BBHList//用于存储学生及课设题目的表单
 {
 private:
-	std::vector<T> List;//表单
-
+	std::vector<T> list;//表单
 public:
 	BBHList()
 	{
@@ -19,7 +18,7 @@ public:
 	unsigned int GetSize()
 	{
 		unsigned int size = 0;
-		size = (unsigned int)(List.size());
+		size = (unsigned int)(list.size());
 		return size;
 	}
 
@@ -29,7 +28,7 @@ public:
 		const bool isUnique = CheckUnique(element);
 		if (isUnique)
 		{
-			List.push_back(element);
+			list.push_back(element);
 		}
 		return isUnique;
 	}
@@ -41,14 +40,14 @@ public:
 		{
 			return false;
 		}
-		List.erase(List.begin() + index);
+		list.erase(list.begin() + index);
 		return true;
 	}
 
 	//保存并释放所有元素
 	~BBHList()
 	{
-		List.clear();
+		list.clear();
 	}
 
 	//获取第i个元素
@@ -56,9 +55,9 @@ public:
 	{
 		if (FunctionLibrary::IsInRange(index, 0u, GetSize() - 1, true))
 		{
-			return List[index];
+			return list[index];
 		}
-		return List[0];
+		return list[0];
 	}
 
 	//检查是否有相同元素,若无则返回真
@@ -66,7 +65,7 @@ public:
 	{
 		for (unsigned int i = 0; i < GetSize(); i++)
 		{
-			if (element == List[i])
+			if (element == list[i])
 			{
 				return false;
 			}
