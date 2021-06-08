@@ -48,10 +48,23 @@ bool System::AddStudent(const std::string _stuID, const std::string _name, const
 	{
 		if (probID == probList[i].GetID() && !probList[i].IsFull())
 		{
-			return studentList->AddElement(Student(_stuID, _name, _sex, _age, &probList[i]));
+			Problem* target = &probList[i];
+			return studentList->AddElement(Student(_stuID, _name, _sex, _age, target));
+			/*const bool result = studentList->AddElement(Student(_stuID, _name, _sex, _age, nullptr));
+			ChangeStudentInfo(&stuList[stuList.GetSize() - 1], &probList[i]);
+			return result;*/
 		}
 	}
 	return false;
+}
+
+bool System::AddStudent(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const unsigned int index)
+{
+	if (!isThisActive || (!FunctionLibrary::IsInRange(index, 0u, probList.GetSize() - 1, true)))
+	{
+		return false;
+	}
+	return studentList->AddElement(Student(_stuID, _name, _sex, _age, &probList[index]));
 }
 
 bool System::ChangeProblemInfo(const Problem* prob, const std::string str, ProbStringInfo targetInfo)
@@ -177,12 +190,13 @@ std::string System::OutputStu()
 	return result;
 }
 
-std::string System::OutputProb()
+std::string System::OutputProb(OutputMethod method)
 {
 	std::string result;
+	const std::string anotherEnter = (method == OutputMethod::Complete) ? "\n" : "";
 	for (unsigned int i = 0; i < problemList->GetSize(); i++)
 	{
-		result += probList[i].Output(OutputMethod::Short) + "\n";
+		result += probList[i].Output(method) + "\n" + anotherEnter;
 	}
 	return result;
 }

@@ -17,7 +17,7 @@ private:
 	//bool setProblem(const Problem*);
 public:
 	//学号 姓名 性别(1男0女) 年龄 选择的题目
-	Student(const std::string, const std::string, const bool, const unsigned int, const Problem*);
+	Student(const std::string, const std::string, const bool, const unsigned int, Problem*);
 	//析构
 	~Student();
 	//获取学号(const)

@@ -24,7 +24,7 @@ public:
 	bool AddProblem(const std::string, const std::string, const std::string, const std::string, const unsigned int);
 	//通过--学号 姓名 性别(1男0女) 年龄 选择的题目编号--添加学生,当且仅当系统激活时可用,成功时返回真
 	bool AddStudent(const std::string, const std::string, const bool, const unsigned int, const std::string = "");
-
+	//通过--学号 姓名 性别(1男0女) 年龄 题目列表的序号--添加学生,当且仅当系统激活时可用,成功时返回真
 	bool AddStudent(const std::string, const std::string, const bool, const unsigned int, const unsigned int);
 	
 	//修改指定问题的编号、标题、指导老师、要求,若成功则返回真
@@ -46,6 +46,6 @@ public:
 	bool DeleteStudent(const unsigned int index);
 
 	std::string OutputStu();
-	std::string OutputProb();
+	std::string OutputProb(OutputMethod);
 };
 

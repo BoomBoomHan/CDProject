@@ -1,12 +1,12 @@
 #include "Student.h"
 #include "Problem.h"
 
-Student::Student(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const Problem* _prob)
+Student::Student(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, Problem* _prob)
 	:stuID(_stuID),
 	name(_name),
 	sex(_sex),
 	age(_age),
-	selectedProblem(const_cast<Problem*>(_prob))
+	selectedProblem(_prob)
 {
 	if (selectedProblem)
 	{
@@ -53,7 +53,10 @@ bool Student::setProblem(const Problem* prob) const
 	{
 		return false;
 	}
-	if (prob->IsFull())
+	if (!prob->IsFull())
+	{
+		return false;
+	}
 	selectedProblem->nowNum--;
 	prob->nowNum++;
 	selectedProblem = const_cast<Problem*>(prob);
