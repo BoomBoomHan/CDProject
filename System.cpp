@@ -1,8 +1,14 @@
 #include "System.h"
 #include "Student.h"
 #include "Problem.h"
+#include <iostream>
 
 bool System::isSystemActive = false;
+
+void System::selfDelete_stu(const Student& targetStu)
+{
+	targetStu.isDeleted = true;
+}
 
 System::System()
 	:isThisActive(false),
@@ -48,7 +54,7 @@ bool System::AddStudent(const std::string _stuID, const std::string _name, const
 	{
 		if (probID == probList[i].GetID() && !probList[i].IsFull())
 		{
-			Problem* target = &probList[i];
+			const Problem* target = &probList[i];
 			return studentList->AddElement(Student(_stuID, _name, _sex, _age, target));
 			/*const bool result = studentList->AddElement(Student(_stuID, _name, _sex, _age, nullptr));
 			ChangeStudentInfo(&stuList[stuList.GetSize() - 1], &probList[i]);
@@ -60,63 +66,90 @@ bool System::AddStudent(const std::string _stuID, const std::string _name, const
 
 bool System::AddStudent(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const unsigned int index)
 {
-	if (!isThisActive || (!FunctionLibrary::IsInRange(index, 0u, probList.GetSize() - 1, true)))
+	if (!isThisActive || (!FunctionLibrary::IsInRange(index, 0u, probList.GetSize(), true)))
 	{
 		return false;
 	}
 	return studentList->AddElement(Student(_stuID, _name, _sex, _age, &probList[index]));
 }
 
-bool System::ChangeProblemInfo(const Problem* prob, const std::string str, ProbStringInfo targetInfo)
+bool System::ChangeProblemInfo(const Problem* targetProb, const std::string str, ProbStringInfo targetInfo)
 {
-	if ((!isThisActive) || !(prob))
+	if ((!isThisActive) || (!targetProb))
 	{
 		return false;
 	}
 	switch (targetInfo)
 	{
 	case ProbStringInfo::ID:
-		prob->id = str;
+		targetProb->id = str;
 		return true;
 	case ProbStringInfo::Title:
-		prob->title = str;
+		targetProb->title = str;
 		return true;
 	case ProbStringInfo::TeacherName:
-		prob->teacherName = str;
+		targetProb->teacherName = str;
 		return true;
 	case ProbStringInfo::Requirement:
-		prob->requirement = str;
+		targetProb->requirement = str;
 		return true;
 	default:
 		return false;
 	}
 }
 
-bool System::ChangeProblemInfo(const Problem* prob, const unsigned int max)
+bool System::ChangeProblemInfo(const Problem* targetProb, const unsigned int max)
 {
-	if ((!isThisActive) || !(prob))
+	if ((!isThisActive) || (!targetProb))
 	{
 		return false;
 	}
-	if (max < prob->nowNum)
+	if (max < targetProb->nowNum)
 	{
 		return false;
 	}
-	prob->maxNum = max;
+	targetProb->maxNum = max;
 	return true;
 }
 
-bool System::DeleteProblem(unsigned int index)
+bool System::DeleteProblem(const Problem* targetProb)
 {
-	if (!isThisActive || (!FunctionLibrary::IsInRange(index, 0u, probList.GetSize() - 1, true)))
+	if ((!isThisActive) || (!targetProb))
 	{
 		return false;
 	}
-	if (probList[index].GetNowNumber())
+	if (targetProb->GetNowNumber())
 	{
 		return false;
 	}
-	return probList.DeleteElement(index);
+	unsigned int index = -1;
+	for (unsigned int i = 0; i < probList.GetSize(); i++)
+	{
+		if (targetProb == &probList[i])
+		{
+			index = i;
+			break;
+		}
+	}
+	const bool deleteResult = probList.DeleteElement(index);
+	if (!deleteResult)
+	{
+		return false;
+	}
+	for (; index < probList.GetSize(); index++)
+	{
+		Problem* prob = &probList[index];
+		for (unsigned int i = 0; i < stuList.GetSize(); i++)
+		{
+			Student* stu = &stuList[i];
+			if (prob->GetID() == stu->GetProblem()->GetID())
+			{
+				std::cout << "!!!" << std::endl;
+				stu->setProblem(&probList[index - 1]);
+			}
+		}
+	}
+	return true;
 }
 
 bool System::ChangeStudentInfo(const Student* targetStu, const std::string str, StuStringInfo targetInfo)
@@ -171,13 +204,15 @@ bool System::ChangeStudentInfo(const Student* targetStu, const Problem* prob)
 	return targetStu->setProblem(prob);
 }
 
-bool System::DeleteStudent(const unsigned int index)
+bool System::DeleteStudent(const Student* targetStu)
 {
-	if (!isThisActive || !FunctionLibrary::IsInRange(index, 0u, stuList.GetSize() - 1, true))
+	/*if (!isThisActive || !FunctionLibrary::IsInRange(index, 0u, stuList.GetSize() - 1, true))
 	{
 		return false;
 	}
-	return stuList.DeleteElement(index);
+	selfDelete_stu(stuList[index]);
+	return stuList.DeleteElement(index);*/
+	return false;
 }
 
 std::string System::OutputStu()
@@ -199,4 +234,23 @@ std::string System::OutputProb(OutputMethod method)
 		result += probList[i].Output(method) + "\n" + anotherEnter;
 	}
 	return result;
+}
+
+void System::Test()
+{
+	using namespace std;
+	AddProblem("010", "课程设计选题系统", "艾勇", "暂无", 30);
+	AddProblem("002", "通讯录", "杨喜敏", "无", 66);
+	AddProblem("003", "火车站购票系统", "姜卓睿", "无", 90);
+	AddProblem("666", "新思路签到系统", "朱凯闻", "无", 5);
+	AddStudent("20210122", "张三", 1, 19, "666");
+	//sys->AddStudent("20210122", "张三", 1, 19, "666");
+	/*cout << OutputProb(OutputMethod::Complete);
+	cout << "------------------------" << endl << endl;
+	cout << OutputStu();*/
+	DeleteProblem(&probList[0]);
+	//cout << "------------------------" << endl << endl;
+	cout << OutputProb(OutputMethod::Complete);
+	cout << "------------------------" << endl << endl;
+	cout << OutputStu();
 }

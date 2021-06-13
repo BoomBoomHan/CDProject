@@ -24,11 +24,11 @@ public:
 	//获取编号
 	//std::string GetID();
 	//获取标题
-	std::string GetTitle();
+	std::string GetTitle() const;
 	//获取最大选题人数
-	unsigned int GetMaxNumber();
+	unsigned int GetMaxNumber() const;
 	//获取已选人数
-	unsigned int GetNowNumber();
+	unsigned int GetNowNumber() const;
 	//是否已选满
 	bool IsFull() const;
 	//三种不同的输出方式,IgnoreID为只输出标题,Short为输出ID和标题,Complete为全部输出

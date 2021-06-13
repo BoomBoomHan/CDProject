@@ -10,20 +10,24 @@ private:
 	mutable bool sex;//1为男，0为女
 	mutable unsigned int age;//年龄
 	mutable class Problem* selectedProblem;//选择的题目
+	mutable bool isDeleted;
 private:
 	//设置题目(const)
 	bool setProblem(const Problem*) const;
 	//设置题目
 	//bool setProblem(const Problem*);
+	//System类是此类的友元类
+	friend class System;
 public:
-	//学号 姓名 性别(1男0女) 年龄 选择的题目
-	Student(const std::string, const std::string, const bool, const unsigned int, Problem*);
+	//学号 姓名 性别(1男0女) 年龄 选择的题目 序号
+	Student(const std::string, const std::string, const bool, const unsigned int, const Problem*);
 	//析构
 	~Student();
 	//获取学号(const)
 	std::string GetID() const;
 	//获取学号
 	//std::string GetID();
+	
 	//获取题目(const)
 	Problem* GetProblem() const;
 	//获取题目

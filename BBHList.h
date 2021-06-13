@@ -36,7 +36,7 @@ public:
 	//删除指定元素,若成功则返回真
 	bool DeleteElement(unsigned int index)
 	{
-		if (!FunctionLibrary::IsInRange(index, 0u, GetSize() - 1, true))
+		if (!FunctionLibrary::IsInRange(index, 0u, GetSize(), true))
 		{
 			return false;
 		}
@@ -53,7 +53,7 @@ public:
 	//获取第i个元素
 	T& operator [](const unsigned int index)
 	{
-		if (FunctionLibrary::IsInRange(index, 0u, GetSize() - 1, true))
+		if (FunctionLibrary::IsInRange(index, 0u, GetSize(), true))
 		{
 			return list[index];
 		}

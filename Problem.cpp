@@ -32,17 +32,17 @@ std::string Problem::GetID() const
 //	return id;
 //}
 
-std::string Problem::GetTitle()
+std::string Problem::GetTitle() const
 {
 	return title;
 }
 
-unsigned int Problem::GetMaxNumber()
+unsigned int Problem::GetMaxNumber() const
 {
 	return maxNum;
 }
 
-unsigned int Problem::GetNowNumber()
+unsigned int Problem::GetNowNumber() const
 {
 	return nowNum;
 }

@@ -1,16 +1,17 @@
 #include "Student.h"
 #include "Problem.h"
 
-Student::Student(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, Problem* _prob)
+Student::Student(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const Problem* _prob)
 	:stuID(_stuID),
 	name(_name),
 	sex(_sex),
 	age(_age),
-	selectedProblem(_prob)
+	isDeleted(false),
+	selectedProblem(nullptr)
 {
 	if (_prob)
 	{
-		setProblem(_prob);
+		const bool setResult = setProblem(_prob);
 	}
 }
 
@@ -20,7 +21,7 @@ Student::~Student()
 	name = '\0';
 	sex = 0;
 	age = 0;
-	if (selectedProblem)
+	if (selectedProblem && isDeleted)
 	{
 		selectedProblem->nowNum--;
 	}
@@ -56,7 +57,10 @@ bool Student::setProblem(const Problem* prob) const
 	{
 		return false;
 	}
-	selectedProblem->nowNum--;
+	if (selectedProblem)
+	{
+		selectedProblem->nowNum--;
+	}
 	prob->nowNum++;
 	selectedProblem = const_cast<Problem*>(prob);
 	return true;
@@ -82,7 +86,7 @@ std::string Student::Output()
 	result += "\nÑ¡ÔñÌâÄ¿:";
 	if (selectedProblem)
 	{
-		result += selectedProblem->Output(OutputMethod::Short);
+		result += selectedProblem->Output(OutputMethod::IgnoreID);
 	}
 	else
 	{
