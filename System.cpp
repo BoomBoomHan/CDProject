@@ -2,13 +2,9 @@
 #include "Student.h"
 #include "Problem.h"
 #include <iostream>
+#include <fstream>
 
 bool System::isSystemActive = false;
-
-void System::selfDelete_stu(const Student& targetStu)
-{
-	targetStu.isDeleted = true;
-}
 
 System::System()
 	:isThisActive(false),
@@ -26,9 +22,11 @@ System::System()
 
 System::~System()
 {
+	//std::ofstream output;
+	
 	isSystemActive = false;
-	delete[] studentList;
-	delete[] problemList;
+	delete studentList;
+	delete problemList;
 }
 
 bool System::AddProblem(const std::string _id, const std::string _title, const std::string _teacherName, const std::string _requirement, const unsigned int _maxNum)
@@ -131,11 +129,10 @@ bool System::DeleteProblem(const Problem* targetProb)
 			break;
 		}
 	}
-	/*const bool deleteResult = probList.DeleteElement(index);
-	if (!deleteResult)
+	if (index == -1)
 	{
 		return false;
-	}*/
+	}
 	const unsigned int deleteTarget = index;
 	for (index += 1; index < probList.GetSize(); index++)
 	{
@@ -143,9 +140,10 @@ bool System::DeleteProblem(const Problem* targetProb)
 		for (unsigned int i = 0; i < stuList.GetSize(); i++)
 		{
 			Student* stu = &stuList[i];
-			if (prob->GetID() == stu->GetProblem()->GetID())
+			if (prob == stu->GetProblem())
 			{
-				stu->setProblem(&probList[index - 1]);
+				//stu->setProblem(&probList[index - 1]);
+				stu->selectedProblem = &probList[index - 1];
 			}
 		}
 	}
@@ -206,13 +204,25 @@ bool System::ChangeStudentInfo(const Student* targetStu, const Problem* prob)
 
 bool System::DeleteStudent(const Student* targetStu)
 {
-	/*if (!isThisActive || !FunctionLibrary::IsInRange(index, 0u, stuList.GetSize() - 1, true))
+	if ((!isThisActive) || (!targetStu))
 	{
 		return false;
 	}
-	selfDelete_stu(stuList[index]);
-	return stuList.DeleteElement(index);*/
-	return false;
+	unsigned int index = -1;
+	for (unsigned int i = 0; i < stuList.GetSize(); i++)
+	{
+		if (targetStu == &stuList[i])
+		{
+			index = i;
+			break;
+		}
+	}
+	if (index == -1)
+	{
+		return false;
+	}
+	targetStu->selfDelete();
+	return stuList.DeleteElement(index);
 }
 
 std::string System::OutputStu()
@@ -220,7 +230,7 @@ std::string System::OutputStu()
 	std::string result;
 	for (unsigned int i = 0; i < studentList->GetSize(); i++)
 	{
-		result += (*studentList)[i].Output() + "\n";
+		result += (*studentList)[i].Output() + "\n\n";
 	}
 	return result;
 }
@@ -244,11 +254,16 @@ void System::Test()
 	AddProblem("003", "火车站购票系统", "姜卓睿", "无", 90);
 	AddProblem("666", "新思路签到系统", "朱凯闻", "无", 5);
 	AddStudent("20210122", "张三", 1, 19, "666");
+	AddStudent("20202111", "李四", 0, 20, "666");
+	AddStudent("20191102", "王五", 1, 20, 0);
 	//sys->AddStudent("20210122", "张三", 1, 19, "666");
-	cout << OutputProb(OutputMethod::Complete);
+	/*cout << OutputProb(OutputMethod::Complete);
 	cout << "------------------------" << endl << endl;
-	cout << OutputStu();
-	DeleteProblem(&probList[0]);
+	cout << OutputStu();*/
+	cout << DeleteProblem(&probList[0]) << endl;
+	cout << DeleteStudent(&stuList[2]) << endl;
+	cout << DeleteProblem(&probList[0]) << endl;
+	cout << DeleteStudent(&stuList[2]) << endl;
 	cout << "------------------------" << endl << endl;
 	cout << OutputProb(OutputMethod::Complete);
 	cout << "------------------------" << endl << endl;

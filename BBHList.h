@@ -3,19 +3,27 @@
 #include <vector>
 
 //由于模板类比较特殊,这个类的定义只有.h而无.cpp文件，函数的声明与定义都写在.h内
+//用于存储学生及课设题目的表单
 template<typename T>
-struct BBHList//用于存储学生及课设题目的表单
+struct BBHList
 {
 private:
 	std::vector<T> list;//表单
 public:
+
 	BBHList()
 	{
 		
 	}
 
+	//保存并释放所有元素
+	~BBHList()
+	{
+		list.clear();
+	}
+
 	//获取表单元素的个数
-	unsigned int GetSize()
+	unsigned int GetSize() const
 	{
 		unsigned int size = 0;
 		size = (unsigned int)(list.size());
@@ -44,12 +52,6 @@ public:
 		return true;
 	}
 
-	//保存并释放所有元素
-	~BBHList()
-	{
-		list.clear();
-	}
-
 	//获取第i个元素
 	T& operator [](const unsigned int index)
 	{
@@ -57,11 +59,11 @@ public:
 		{
 			return list[index];
 		}
-		return list[0];
+		return list[GetSize() - 1];
 	}
 
 	//检查是否有相同元素,若无则返回真
-	bool CheckUnique(const T& element)
+	bool CheckUnique(const T& element) const
 	{
 		for (unsigned int i = 0; i < GetSize(); i++)
 		{

@@ -2,8 +2,7 @@
 #include "BBHList.h"
 #include "Enums.h"
 
-
-class System//课程设计选题系统
+class System//课程设计选题系统类
 {
 private:
 	bool isThisActive;
@@ -13,9 +12,6 @@ private:
 	BBHList<class Problem>* problemList;
 	BBHList<Student>& stuList;
 	BBHList<Problem>& probList;
-private:
-	//将学生标记为被删除
-	void selfDelete_stu(const Student&);
 public:
 	//缺省构造
 	System();

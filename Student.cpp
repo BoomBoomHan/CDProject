@@ -27,6 +27,14 @@ Student::~Student()
 	}
 }
 
+void Student::selfDelete() const
+{
+	if (selectedProblem)
+	{
+		selectedProblem->nowNum--;
+	}
+}
+
 std::string Student::GetID() const
 {
 	return stuID;
@@ -83,6 +91,7 @@ std::string Student::Output()
 	std::string result;
 	result += "学号:" + stuID + "\n姓名:" + name + "\n性别:";
 	result += sex ? "男" : "女";
+	result += "\n年龄:" + FunctionLibrary::ToString(age) + "岁";
 	result += "\n选择题目:";
 	if (selectedProblem)
 	{

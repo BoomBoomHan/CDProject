@@ -2,7 +2,7 @@
 #include <string>
 #include "System.h"
 
-class Student
+class Student//学生类
 {
 private:
 	mutable std::string stuID;//学号
@@ -16,8 +16,10 @@ private:
 	bool setProblem(const Problem*) const;
 	//设置题目
 	//bool setProblem(const Problem*);
-	//System类是此类的友元类
-	friend class System;
+
+	//将自己所选的题目已选人数减1
+	void selfDelete() const;
+	friend class System;//System类是此类的友元类
 public:
 	//学号 姓名 性别(1男0女) 年龄 选择的题目 序号
 	Student(const std::string, const std::string, const bool, const unsigned int, const Problem*);

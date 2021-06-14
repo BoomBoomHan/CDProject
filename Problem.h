@@ -3,7 +3,7 @@
 #include "System.h"
 #include "Enums.h"
 
-class Problem
+class Problem//课设题目类
 {
 private:
 	mutable std::string id;//编号
@@ -14,6 +14,7 @@ private:
 	mutable unsigned int nowNum;//已选人数
 private:
 	friend class Student;//Student类是此类的友元类
+	friend class System;//System类是此类的友元类
 public:
 	//编号 标题 指导老师 要求 最大人数
 	Problem(const std::string, const std::string, const std::string, const std::string, const unsigned int);
