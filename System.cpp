@@ -131,12 +131,13 @@ bool System::DeleteProblem(const Problem* targetProb)
 			break;
 		}
 	}
-	const bool deleteResult = probList.DeleteElement(index);
+	/*const bool deleteResult = probList.DeleteElement(index);
 	if (!deleteResult)
 	{
 		return false;
-	}
-	for (; index < probList.GetSize(); index++)
+	}*/
+	const unsigned int deleteTarget = index;
+	for (index += 1; index < probList.GetSize(); index++)
 	{
 		Problem* prob = &probList[index];
 		for (unsigned int i = 0; i < stuList.GetSize(); i++)
@@ -144,12 +145,11 @@ bool System::DeleteProblem(const Problem* targetProb)
 			Student* stu = &stuList[i];
 			if (prob->GetID() == stu->GetProblem()->GetID())
 			{
-				std::cout << "!!!" << std::endl;
 				stu->setProblem(&probList[index - 1]);
 			}
 		}
 	}
-	return true;
+	return probList.DeleteElement(deleteTarget);
 }
 
 bool System::ChangeStudentInfo(const Student* targetStu, const std::string str, StuStringInfo targetInfo)
@@ -245,11 +245,11 @@ void System::Test()
 	AddProblem("666", "新思路签到系统", "朱凯闻", "无", 5);
 	AddStudent("20210122", "张三", 1, 19, "666");
 	//sys->AddStudent("20210122", "张三", 1, 19, "666");
-	/*cout << OutputProb(OutputMethod::Complete);
+	cout << OutputProb(OutputMethod::Complete);
 	cout << "------------------------" << endl << endl;
-	cout << OutputStu();*/
+	cout << OutputStu();
 	DeleteProblem(&probList[0]);
-	//cout << "------------------------" << endl << endl;
+	cout << "------------------------" << endl << endl;
 	cout << OutputProb(OutputMethod::Complete);
 	cout << "------------------------" << endl << endl;
 	cout << OutputStu();
