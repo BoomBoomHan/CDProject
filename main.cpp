@@ -17,13 +17,19 @@ int main()
 	ofstream fout;
 	//
 	string filePath = "test";
-	if (!_access(filePath.c_str(), 0))
+	
+	if (_access(filePath.c_str(), 0))
 	{
-		cout << _mkdir(filePath.c_str());
+		string command = "md " + filePath;
+		_mkdir(filePath.c_str());
 	}
-	fout.open(filePath + "out.txt");
+	fout.open(filePath + "/out.dat");
 	if (fout.fail())
 	{
 		cout << "´ò¿ªÊ§°Ü!" << endl;
+	}
+	else
+	{
+		fout << "I'm your father!" << endl;
 	}
 }
