@@ -76,6 +76,7 @@ System::System()
 		//数据检查
 		for (unsigned int i = 0; i < probList.GetSize(); i++)
 		{
+			//std::cout << probList[i].GetNowNumber() << "," << nowNums[i] << std::endl;
 			if (probList[i].GetNowNumber() != nowNums[i])
 			{
 				ERROR_SELF_REPAIR();
@@ -154,6 +155,10 @@ bool System::AddStudent(const std::string _stuID, const std::string _name, const
 	{
 		return false;
 	}
+	if (!stuList.CheckUnique(Student(_stuID, _name, _sex, _age, nullptr)))
+	{
+		return false;
+	}
 	if (probID == "")
 	{
 		return studentList->AddElement(Student(_stuID, _name, _sex, _age, nullptr));
@@ -171,7 +176,7 @@ bool System::AddStudent(const std::string _stuID, const std::string _name, const
 
 bool System::AddStudent(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const unsigned int index)
 {
-	if (!isThisActive || (!FunctionLibrary::IsInRange(index, 0u, probList.GetSize(), true)))
+	if ((!isThisActive) || (!FunctionLibrary::IsInRange(index, 0u, probList.GetSize(), true)) || (!stuList.CheckUnique(Student(_stuID, _name, _sex, _age, nullptr))))
 	{
 		return false;
 	}
@@ -357,14 +362,15 @@ void System::Test()
 {
 	using namespace std;
 	//CLEAR_DATAS();
-	/*AddProblem("010", "课程设计选题系统", "艾勇", "暂无", 30);
+	AddProblem("010", "课程设计选题系统", "艾勇", "暂无", 30);
 	AddProblem("002", "通讯录", "杨喜敏", "无", 66);
 	AddProblem("003", "火车站购票系统", "姜卓睿", "无", 90);
 	AddProblem("666", "新思路签到系统", "朱凯闻", "无", 5);
 	AddStudent("20210122", "张三", 1, 19, "666");
 	AddStudent("20202111", "李四", 0, 20, "666");
 	AddStudent("20191102", "王五", 1, 20, 0);
-	AddStudent("20211002", "爆炸", 1, 19);*/
+	AddStudent("20211002", "爆炸", 1, 19);
+	DeleteProblem(&probList[1]);
 	//sys->AddStudent("20210122", "张三", 1, 19, "666");
 	//AddProblem("002", "通讯录", "杨喜敏", "无", 66);
 	

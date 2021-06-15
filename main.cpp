@@ -14,7 +14,7 @@ int main()
 	System* sys = new System;
 	sys->Test();
 	delete sys;
-	
+	return 0;
 	
 	
 }
