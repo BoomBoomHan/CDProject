@@ -11,25 +11,10 @@ using namespace std;
 
 int main()
 {
-	/*System* sys = new System;
+	System* sys = new System;
 	sys->Test();
-	delete sys;*/
-	ofstream fout;
-	//
-	string filePath = "test";
+	delete sys;
 	
-	if (_access(filePath.c_str(), 0))
-	{
-		string command = "md " + filePath;
-		_mkdir(filePath.c_str());
-	}
-	fout.open(filePath + "/out.dat");
-	if (fout.fail())
-	{
-		cout << "´ò¿ªÊ§°Ü!" << endl;
-	}
-	else
-	{
-		fout << "I'm your father!" << endl;
-	}
+	
+	
 }

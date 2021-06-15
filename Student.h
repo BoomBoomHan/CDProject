@@ -34,8 +34,9 @@ public:
 	Problem* GetProblem() const;
 	//获取题目
 	//Problem* GetProblem();
-	//输出为字符串
-	std::string Output();
+	
+	//四种不同的输出方式,IgnoreID为只输出标题,Short为输出ID和标题,Complete为全部输出,Save为只输出关键信息
+	std::string Output(OutputMethod) const;
 	//若两个学生学号相同则返回真(const)
 	bool operator ==(const Student&) const;
 	//若两个学生学号相同则返回真

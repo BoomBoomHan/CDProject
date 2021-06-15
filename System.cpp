@@ -11,31 +11,127 @@ System::System()
 	studentList(new BBHList<Student>),
 	problemList(new BBHList<Problem>),
 	stuList(*studentList),
-	probList(*problemList)
+	probList(*problemList),
+	databasePath("Library"),
+	stuListFileName("Students.dat"),
+	probListFileName("Problems.dat")
 {
 	if (!isSystemActive)
 	{
 		isSystemActive = true;
 		isThisActive = true;
 	}
+	if (isThisActive)
+	{
+		std::ifstream inputFile;
+		//读取题目
+		BBHList<unsigned int> nowNums;
+		std::string _id;//编号
+		std::string _title;//标题
+		std::string _teacherName;//指导老师
+		std::string _requirement;//要求
+		unsigned int _maxNum = 0;//最大选课人数
+		unsigned int _nowNum = 0;//已选人数
+		if (FunctionLibrary::OpenFile(inputFile, databasePath + "/" + probListFileName))
+		{
+			while (!inputFile.eof())
+			{
+				std::getline(inputFile, _id);
+				std::getline(inputFile, _title);
+				std::getline(inputFile, _teacherName);
+				std::getline(inputFile, _requirement);
+				inputFile >> _maxNum >> _nowNum;
+				inputFile.get();
+				AddProblem(_id, _title, _teacherName, _requirement, _maxNum);
+				nowNums.AddElement(_nowNum, false);
+			}
+		}
+		//读取学生
+		std::string _stuID;//学号
+		std::string _name;//姓名
+		bool _sex;//1为男，0为女
+		unsigned int _age;//年龄
+		std::string _selectedProblemTitle;//选择的题目编号
+		if (FunctionLibrary::OpenFile(inputFile, databasePath + "/" + stuListFileName))
+		{
+			while (!inputFile.eof())
+			{
+				std::getline(inputFile, _stuID);
+				std::getline(inputFile, _name);
+				inputFile >> _sex >> _age;
+				inputFile.get();
+				std::getline(inputFile, _selectedProblemTitle);
+				AddStudent(_stuID, _name, _sex, _age, _selectedProblemTitle);
+			}
+		}
+		FunctionLibrary::CloseFile(inputFile);
+		//数据检查
+		for (unsigned int i = 0; i < probList.GetSize(); i++)
+		{
+			if (probList[i].GetNowNumber() != nowNums[i])
+			{
+				ERROR_SELF_REPAIR();
+				break;
+			}
+		}
+	}
 }
 
 System::~System()
 {
-	//std::ofstream output;
-	
+	std::ofstream outputFile;
+	std::string result;
+	//保存题目
+	if (FunctionLibrary::OpenFile(outputFile, FunctionLibrary::CreateFolder(databasePath) + "/" + probListFileName))
+	{
+		for (unsigned int i = 0; i < probList.GetSize(); i++)
+		{
+			result += probList[i].Output(OutputMethod::Save);
+		}
+		result.erase(result.end() - 1);
+		outputFile << result;
+		result.clear();
+	}
+	//保存学生
+	if (FunctionLibrary::OpenFile(outputFile, FunctionLibrary::CreateFolder(databasePath) + "/" + stuListFileName))
+	{
+		for (unsigned int i = 0; i < stuList.GetSize(); i++)
+		{
+			result += stuList[i].Output(OutputMethod::Save);
+		}
+		result.erase(result.end() - 1);
+		outputFile << result;
+		result.clear();
+	}
+	FunctionLibrary::CloseFile(outputFile);
+	//关闭系统
 	isSystemActive = false;
 	delete studentList;
 	delete problemList;
 }
 
-bool System::AddProblem(const std::string _id, const std::string _title, const std::string _teacherName, const std::string _requirement, const unsigned int _maxNum)
+void System::ERROR_SELF_REPAIR()
+{
+	std::cout << "ERROR!!!" << std::endl;
+	for (unsigned int i = 0; i < stuList.GetSize(); i++)
+	{
+		stuList[i].selectedProblem = nullptr;
+	}
+	for (unsigned int i = 0; i < probList.GetSize(); i++)
+	{
+		probList[i].nowNum = 0;
+	}
+}
+
+bool System::AddProblem(const std::string _id, const std::string _title, const std::string _teacherName, const std::string _requirement, const unsigned int _maxNum, const unsigned int _nowNum)
 {
 	if (!isThisActive)
 	{
 		return false;
 	}
-	return problemList->AddElement(Problem(_id, _title, _teacherName, _requirement, _maxNum));
+	Problem prob(_id, _title, _teacherName, _requirement, _maxNum);
+	prob.nowNum = _nowNum;
+	return problemList->AddElement(prob);
 }
 
 bool System::AddStudent(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const std::string probID)
@@ -54,9 +150,6 @@ bool System::AddStudent(const std::string _stuID, const std::string _name, const
 		{
 			const Problem* target = &probList[i];
 			return studentList->AddElement(Student(_stuID, _name, _sex, _age, target));
-			/*const bool result = studentList->AddElement(Student(_stuID, _name, _sex, _age, nullptr));
-			ChangeStudentInfo(&stuList[stuList.GetSize() - 1], &probList[i]);
-			return result;*/
 		}
 	}
 	return false;
@@ -225,12 +318,12 @@ bool System::DeleteStudent(const Student* targetStu)
 	return stuList.DeleteElement(index);
 }
 
-std::string System::OutputStu()
+std::string System::OutputStu(OutputMethod method)
 {
 	std::string result;
 	for (unsigned int i = 0; i < studentList->GetSize(); i++)
 	{
-		result += (*studentList)[i].Output() + "\n\n";
+		result += (*studentList)[i].Output(method) + "\n\n";
 	}
 	return result;
 }
@@ -249,23 +342,26 @@ std::string System::OutputProb(OutputMethod method)
 void System::Test()
 {
 	using namespace std;
-	AddProblem("010", "课程设计选题系统", "艾勇", "暂无", 30);
+	/*AddProblem("010", "课程设计选题系统", "艾勇", "暂无", 30);
 	AddProblem("002", "通讯录", "杨喜敏", "无", 66);
 	AddProblem("003", "火车站购票系统", "姜卓睿", "无", 90);
 	AddProblem("666", "新思路签到系统", "朱凯闻", "无", 5);
 	AddStudent("20210122", "张三", 1, 19, "666");
 	AddStudent("20202111", "李四", 0, 20, "666");
 	AddStudent("20191102", "王五", 1, 20, 0);
+	AddStudent("20211002", "爆炸", 1, 19);*/
 	//sys->AddStudent("20210122", "张三", 1, 19, "666");
-	/*cout << OutputProb(OutputMethod::Complete);
+	//AddProblem("002", "通讯录", "杨喜敏", "无", 66);
+	cout << OutputProb(OutputMethod::Complete);
 	cout << "------------------------" << endl << endl;
-	cout << OutputStu();*/
-	cout << DeleteProblem(&probList[0]) << endl;
+	cout << OutputStu(OutputMethod::Complete);
+	cout << stuList.GetSize() << "," << probList.GetSize() << endl;
+	/*cout << DeleteProblem(&probList[0]) << endl;
 	cout << DeleteStudent(&stuList[2]) << endl;
 	cout << DeleteProblem(&probList[0]) << endl;
 	cout << DeleteStudent(&stuList[2]) << endl;
 	cout << "------------------------" << endl << endl;
 	cout << OutputProb(OutputMethod::Complete);
 	cout << "------------------------" << endl << endl;
-	cout << OutputStu();
+	cout << OutputStu();*/
 }

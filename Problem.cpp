@@ -52,14 +52,18 @@ bool Problem::IsFull() const
 	return (nowNum == maxNum);
 }
 
-std::string Problem::Output(OutputMethod method)
+std::string Problem::Output(OutputMethod method) const
 {
 	std::string result;
 	switch (method)
 	{
 	case OutputMethod::Complete:
 		result = "编号:" + id + "\n标题:" + title + "\n指导老师:" + teacherName + "\n要求:" + requirement
-			+ "\n最大选题人数:" + FunctionLibrary::ToString<unsigned int>(maxNum) + "\n已选人数:" + FunctionLibrary::ToString<unsigned int>(nowNum);
+			+ "\n最大选题人数:" + FunctionLibrary::ToString(maxNum) + "\n已选人数:" + FunctionLibrary::ToString(nowNum);
+		break;
+	case OutputMethod::Save:
+		result = id + "\n" + title + "\n" + teacherName + "\n" + requirement
+			+ "\n" + FunctionLibrary::ToString(maxNum) + "\n" + FunctionLibrary::ToString(nowNum) + "\n";
 		break;
 	case OutputMethod::Short:
 		result = id + ".";

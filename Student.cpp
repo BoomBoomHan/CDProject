@@ -86,20 +86,45 @@ bool Student::setProblem(const Problem* prob) const
 //	return true;
 //}
 
-std::string Student::Output()
+std::string Student::Output(OutputMethod method) const
 {
 	std::string result;
-	result += "学号:" + stuID + "\n姓名:" + name + "\n性别:";
-	result += sex ? "男" : "女";
-	result += "\n年龄:" + FunctionLibrary::ToString(age) + "岁";
-	result += "\n选择题目:";
-	if (selectedProblem)
+	switch (method)
 	{
-		result += selectedProblem->Output(OutputMethod::IgnoreID);
-	}
-	else
-	{
-		result += "暂无";
+	case OutputMethod::Complete:
+		result = "学号:" + stuID + "\n姓名:" + name + "\n性别:";
+		result += sex ? "男" : "女";
+		result += "\n年龄:" + FunctionLibrary::ToString(age) + "岁";
+		result += "\n选择题目:";
+		if (selectedProblem)
+		{
+			result += selectedProblem->Output(OutputMethod::IgnoreID);
+		}
+		else
+		{
+			result += "暂无";
+		}
+		break;
+	case OutputMethod::Save:
+		result = stuID + "\n" + name + "\n";
+		result += sex ? "1" : "0";
+		result += "\n" + FunctionLibrary::ToString(age) + "\n";
+		if (selectedProblem)
+		{
+			result += selectedProblem->GetID();
+		}
+		else
+		{
+			result += "NO_PROBLEM";
+		}
+		result += "\n";
+		break;
+	case OutputMethod::Short:
+		result = stuID + ",";
+	case OutputMethod::IgnoreID:
+	default:
+		result += name;
+		break;
 	}
 	return result;
 }
