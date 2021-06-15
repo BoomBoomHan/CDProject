@@ -209,6 +209,7 @@
     <ClInclude Include="Problem.h" />
     <ClInclude Include="Student.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="Library.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FunctionLibrary.cpp" />

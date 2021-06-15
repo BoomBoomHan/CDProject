@@ -41,6 +41,7 @@ public:
 	bool operator ==(const Student&) const;
 	//若两个学生学号相同则返回真
 	//bool operator ==(const Student&);
+	
 	//此友元函数是System类的成员函数
 	friend bool System::ChangeStudentInfo(const Student*, const std::string, StuStringInfo);
 	//此友元函数是System类的成员函数

@@ -91,7 +91,7 @@ System::~System()
 	std::ofstream outputFile;
 	std::string result;
 	//保存题目
-	if (FunctionLibrary::OpenFile(outputFile, FunctionLibrary::CreateFolder(databasePath) + "/" + probListFileName))
+	if (FunctionLibrary::OpenFile(outputFile, FunctionLibrary::CreateFolder(databasePath) + "/" + probListFileName) && probList.GetSize())
 	{
 		for (unsigned int i = 0; i < probList.GetSize(); i++)
 		{
@@ -102,7 +102,7 @@ System::~System()
 		result.clear();
 	}
 	//保存学生
-	if (FunctionLibrary::OpenFile(outputFile, FunctionLibrary::CreateFolder(databasePath) + "/" + stuListFileName))
+	if (FunctionLibrary::OpenFile(outputFile, FunctionLibrary::CreateFolder(databasePath) + "/" + stuListFileName) && stuList.GetSize())
 	{
 		for (unsigned int i = 0; i < stuList.GetSize(); i++)
 		{
@@ -225,7 +225,7 @@ bool System::ChangeProblemInfo(const Problem* targetProb, const unsigned int max
 
 bool System::DeleteProblem(const Problem* targetProb)
 {
-	if ((!isThisActive) || (!targetProb))
+	if ((!isThisActive) || (!targetProb) || (!probList.GetSize()))
 	{
 		return false;
 	}
@@ -316,7 +316,7 @@ bool System::ChangeStudentInfo(const Student* targetStu, const Problem* prob)
 
 bool System::DeleteStudent(const Student* targetStu)
 {
-	if ((!isThisActive) || (!targetStu))
+	if ((!isThisActive) || (!targetStu) || (!stuList.GetSize()))
 	{
 		return false;
 	}
@@ -339,16 +339,24 @@ bool System::DeleteStudent(const Student* targetStu)
 
 std::string System::OutputStu(OutputMethod method)
 {
+	if (stuList.GetSize() == 0)
+	{
+		return "空!";
+	}
 	std::string result;
 	for (unsigned int i = 0; i < studentList->GetSize(); i++)
 	{
-		result += (*studentList)[i].Output(method) + "\n\n";
+		result += stuList[i].Output(method) + "\n\n";
 	}
 	return result;
 }
 
 std::string System::OutputProb(OutputMethod method)
 {
+	if (probList.GetSize() == 0)
+	{
+		return "空!";
+	}
 	std::string result;
 	const std::string anotherEnter = (method == OutputMethod::Complete) ? "\n" : "";
 	for (unsigned int i = 0; i < problemList->GetSize(); i++)
@@ -361,7 +369,7 @@ std::string System::OutputProb(OutputMethod method)
 void System::Test()
 {
 	using namespace std;
-	//CLEAR_DATAS();
+	//示例
 	AddProblem("010", "课程设计选题系统", "艾勇", "暂无", 30);
 	AddProblem("002", "通讯录", "杨喜敏", "无", 66);
 	AddProblem("003", "火车站购票系统", "姜卓睿", "无", 90);
@@ -370,22 +378,14 @@ void System::Test()
 	AddStudent("20202111", "李四", 0, 20, "666");
 	AddStudent("20191102", "王五", 1, 20, 0);
 	AddStudent("20211002", "爆炸", 1, 19);
-	DeleteProblem(&probList[1]);
-	//sys->AddStudent("20210122", "张三", 1, 19, "666");
-	//AddProblem("002", "通讯录", "杨喜敏", "无", 66);
+	DeleteStudent(&stuList[0]);
+	DeleteProblem(&probList[0]);
+
+	//cout << stuList.GetSize();
 	
-	/*AddStudent("20211002", "爆炸", 1, 19);
-	AddStudent("20211000", "爆炸", 1, 19, "003");*/
-	//DeleteProblem(&probList[1]);
+	//这里开始不要动
 	cout << OutputProb(OutputMethod::Complete);
 	cout << "------------------------" << endl << endl;
 	cout << OutputStu(OutputMethod::Complete);
-	/*cout << DeleteProblem(&probList[0]) << endl;
-	cout << DeleteStudent(&stuList[2]) << endl;
-	cout << DeleteProblem(&probList[0]) << endl;
-	cout << DeleteStudent(&stuList[2]) << endl;
-	cout << "------------------------" << endl << endl;
-	cout << OutputProb(OutputMethod::Complete);
-	cout << "------------------------" << endl << endl;
-	cout << OutputStu();*/
+	//cout << stuList[0].Output(OutputMethod::Complete);
 }
