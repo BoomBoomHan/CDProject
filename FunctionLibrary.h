@@ -25,5 +25,7 @@ public:
 		const bool result2 = isRightClosed ? (target <= max) : (target < max);
 		return result1 * result2;
 	}
+
+	static bool CreateFolder(const std::string);
 };
 

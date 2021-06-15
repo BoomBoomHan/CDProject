@@ -1,5 +1,7 @@
 #include "FunctionLibrary.h"
 #include <sstream>
+#include <io.h>
+#include <direct.h>
 
 //template<typename T>
 //std::string FunctionLibrary::ToString(T t)
@@ -11,3 +13,8 @@
 //	stream.clear();
 //	return result;
 //}
+
+bool FunctionLibrary::CreateFolder(const std::string folderPath)
+{
+	return false;
+}
