@@ -37,12 +37,16 @@ System::System()
 			while (!inputFile.eof())
 			{
 				std::getline(inputFile, _id);
+				if (_id == "")
+				{
+					break;
+				}
 				std::getline(inputFile, _title);
 				std::getline(inputFile, _teacherName);
 				std::getline(inputFile, _requirement);
 				inputFile >> _maxNum >> _nowNum;
 				inputFile.get();
-				AddProblem(_id, _title, _teacherName, _requirement, _maxNum);
+				AddProblem(_id, _title, _teacherName, _requirement, _maxNum, 0u);
 				nowNums.AddElement(_nowNum, false);
 			}
 		}
@@ -57,6 +61,10 @@ System::System()
 			while (!inputFile.eof())
 			{
 				std::getline(inputFile, _stuID);
+				if (_stuID == "")
+				{
+					break;
+				}
 				std::getline(inputFile, _name);
 				inputFile >> _sex >> _age;
 				inputFile.get();
@@ -123,6 +131,12 @@ void System::ERROR_SELF_REPAIR()
 	}
 }
 
+void System::CLEAR_DATAS()
+{
+	remove((databasePath + "/" + stuListFileName).c_str());
+	remove((databasePath + "/" + probListFileName).c_str());
+}
+
 bool System::AddProblem(const std::string _id, const std::string _title, const std::string _teacherName, const std::string _requirement, const unsigned int _maxNum, const unsigned int _nowNum)
 {
 	if (!isThisActive)
@@ -146,9 +160,9 @@ bool System::AddStudent(const std::string _stuID, const std::string _name, const
 	}
 	for (unsigned int i = 0; i < probList.GetSize(); i++)
 	{
-		if (probID == probList[i].GetID() && !probList[i].IsFull())
+		if (probID == probList[i].GetID())
 		{
-			const Problem* target = &probList[i];
+			const Problem* target = (!probList[i].IsFull()) ? &probList[i] : nullptr;
 			return studentList->AddElement(Student(_stuID, _name, _sex, _age, target));
 		}
 	}
@@ -161,7 +175,8 @@ bool System::AddStudent(const std::string _stuID, const std::string _name, const
 	{
 		return false;
 	}
-	return studentList->AddElement(Student(_stuID, _name, _sex, _age, &probList[index]));
+	const Problem* target = (!probList[index].IsFull()) ? &probList[index] : nullptr;
+	return studentList->AddElement(Student(_stuID, _name, _sex, _age, target));
 }
 
 bool System::ChangeProblemInfo(const Problem* targetProb, const std::string str, ProbStringInfo targetInfo)
@@ -235,7 +250,6 @@ bool System::DeleteProblem(const Problem* targetProb)
 			Student* stu = &stuList[i];
 			if (prob == stu->GetProblem())
 			{
-				//stu->setProblem(&probList[index - 1]);
 				stu->selectedProblem = &probList[index - 1];
 			}
 		}
@@ -342,6 +356,7 @@ std::string System::OutputProb(OutputMethod method)
 void System::Test()
 {
 	using namespace std;
+	//CLEAR_DATAS();
 	/*AddProblem("010", "课程设计选题系统", "艾勇", "暂无", 30);
 	AddProblem("002", "通讯录", "杨喜敏", "无", 66);
 	AddProblem("003", "火车站购票系统", "姜卓睿", "无", 90);
@@ -352,10 +367,13 @@ void System::Test()
 	AddStudent("20211002", "爆炸", 1, 19);*/
 	//sys->AddStudent("20210122", "张三", 1, 19, "666");
 	//AddProblem("002", "通讯录", "杨喜敏", "无", 66);
+	
+	/*AddStudent("20211002", "爆炸", 1, 19);
+	AddStudent("20211000", "爆炸", 1, 19, "003");*/
+	//DeleteProblem(&probList[1]);
 	cout << OutputProb(OutputMethod::Complete);
 	cout << "------------------------" << endl << endl;
 	cout << OutputStu(OutputMethod::Complete);
-	cout << stuList.GetSize() << "," << probList.GetSize() << endl;
 	/*cout << DeleteProblem(&probList[0]) << endl;
 	cout << DeleteStudent(&stuList[2]) << endl;
 	cout << DeleteProblem(&probList[0]) << endl;

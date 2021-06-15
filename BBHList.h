@@ -80,4 +80,10 @@ public:
 		}
 		return true;
 	}
+
+	void ClearDatas()
+	{
+		list.clear();
+		size = 0;
+	}
 };

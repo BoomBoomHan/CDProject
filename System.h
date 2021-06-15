@@ -18,6 +18,8 @@ private:
 private:
 	//数据被非法修改过,进行自我修复从而将所有学生的选题和题目的已选人数清零
 	void ERROR_SELF_REPAIR();
+	//删除所有的数据
+	void CLEAR_DATAS();
 public:
 	//缺省构造
 	System();
