@@ -22,9 +22,6 @@ public:
 	~Problem();
 	//获取编号(const)
 	std::string GetID() const;
-	//获取编号
-	//std::string GetID();
-	
 	//获取标题
 	std::string GetTitle() const;
 	//获取最大选题人数
@@ -37,9 +34,6 @@ public:
 	std::string Output(OutputMethod) const;
 	//若两者编号相同则返回真(const)
 	bool operator ==(const Problem&) const;
-	//若两者编号相同则返回真
-	//bool operator ==(const Problem&);
-
 	//此友元函数是System类的成员函数
 	friend bool System::ChangeProblemInfo(const Problem*, const std::string, ProbStringInfo);
 	//此友元函数是System类的成员函数

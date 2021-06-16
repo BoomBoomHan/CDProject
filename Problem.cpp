@@ -27,11 +27,6 @@ std::string Problem::GetID() const
 	return id;
 }
 
-//std::string Problem::GetID()
-//{
-//	return id;
-//}
-
 std::string Problem::GetTitle() const
 {
 	return title;
@@ -79,8 +74,3 @@ bool Problem::operator ==(const Problem& prob) const
 {
 	return (id == prob.GetID()) ? true : false;
 }
-
-//bool Problem::operator ==(const Problem& prob)
-//{
-//	return (id == prob.GetID()) ? true : false;
-//}

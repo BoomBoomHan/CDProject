@@ -6,7 +6,7 @@
 
 bool System::isSystemActive = false;
 
-System::System()
+System::System(const std::string userName, const std::string password)
 	:isThisActive(false),
 	studentList(new BBHList<Student>),
 	problemList(new BBHList<Problem>),
@@ -14,9 +14,10 @@ System::System()
 	probList(*problemList),
 	databasePath("Library"),
 	stuListFileName("Students.dat"),
-	probListFileName("Problems.dat")
+	probListFileName("Problems.dat"),
+	correspondingAccount{ "BoomBoomHan","123456" }
 {
-	if (!isSystemActive)
+	if ((!isSystemActive) && (userName == correspondingAccount[0]) && (password == correspondingAccount[1]))
 	{
 		isSystemActive = true;
 		isThisActive = true;
@@ -151,27 +152,24 @@ bool System::AddProblem(const std::string _id, const std::string _title, const s
 
 bool System::AddStudent(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const std::string probID)
 {
-	if (!isThisActive)
+	if ((!isThisActive) || (!stuList.CheckUnique(Student(_stuID, _name, _sex, _age, nullptr))))
 	{
 		return false;
 	}
-	if (!stuList.CheckUnique(Student(_stuID, _name, _sex, _age, nullptr)))
-	{
-		return false;
-	}
-	if (probID == "")
+	if (probID == "" || probID == Student::nullProblemFlag)
 	{
 		return studentList->AddElement(Student(_stuID, _name, _sex, _age, nullptr));
 	}
+	Problem* target = nullptr;
 	for (unsigned int i = 0; i < probList.GetSize(); i++)
 	{
 		if (probID == probList[i].GetID())
 		{
-			const Problem* target = (!probList[i].IsFull()) ? &probList[i] : nullptr;
-			return studentList->AddElement(Student(_stuID, _name, _sex, _age, target));
+			target = (!probList[i].IsFull()) ? &probList[i] : nullptr;
+			break;
 		}
 	}
-	return false;
+	return studentList->AddElement(Student(_stuID, _name, _sex, _age, target));
 }
 
 bool System::AddStudent(const std::string _stuID, const std::string _name, const bool _sex, const unsigned int _age, const unsigned int index)
@@ -262,6 +260,11 @@ bool System::DeleteProblem(const Problem* targetProb)
 	return probList.DeleteElement(deleteTarget);
 }
 
+bool System::DeleteProblem(const unsigned int index)
+{
+	return DeleteProblem(&probList[index]);
+}
+
 bool System::ChangeStudentInfo(const Student* targetStu, const std::string str, StuStringInfo targetInfo)
 {
 	if (!isThisActive || !(targetStu))
@@ -337,6 +340,11 @@ bool System::DeleteStudent(const Student* targetStu)
 	return stuList.DeleteElement(index);
 }
 
+bool System::DeleteStudent(const unsigned int index)
+{
+	return DeleteStudent(&stuList[index]);
+}
+
 std::string System::OutputStu(OutputMethod method)
 {
 	if (stuList.GetSize() == 0)
@@ -364,28 +372,4 @@ std::string System::OutputProb(OutputMethod method)
 		result += probList[i].Output(method) + "\n" + anotherEnter;
 	}
 	return result;
-}
-
-void System::Test()
-{
-	using namespace std;
-	//示例
-	AddProblem("010", "课程设计选题系统", "艾勇", "暂无", 30);
-	AddProblem("002", "通讯录", "杨喜敏", "无", 66);
-	AddProblem("003", "火车站购票系统", "姜卓睿", "无", 90);
-	AddProblem("666", "新思路签到系统", "朱凯闻", "无", 5);
-	AddStudent("20210122", "张三", 1, 19, "666");
-	AddStudent("20202111", "李四", 0, 20, "666");
-	AddStudent("20191102", "王五", 1, 20, 0);
-	AddStudent("20211002", "爆炸", 1, 19);
-	DeleteStudent(&stuList[0]);
-	DeleteProblem(&probList[0]);
-
-	//cout << stuList.GetSize();
-	
-	//这里开始不要动
-	cout << OutputProb(OutputMethod::Complete);
-	cout << "------------------------" << endl << endl;
-	cout << OutputStu(OutputMethod::Complete);
-	//cout << stuList[0].Output(OutputMethod::Complete);
 }

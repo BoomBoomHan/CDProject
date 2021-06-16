@@ -10,6 +10,7 @@ private:
 	const std::string databasePath;//数据库路径
 	const std::string stuListFileName;//学生数据库文件名
 	const std::string probListFileName;//题目数据库文件名
+	const std::string correspondingAccount[2];
 private:
 	BBHList<class Student>* studentList;//存放学生的表单
 	BBHList<class Problem>* problemList;//存放题目的表单
@@ -21,8 +22,8 @@ private:
 	//删除所有的数据
 	void CLEAR_DATAS();
 public:
-	//缺省构造
-	System();
+	//构造函数,当输入账号密码正确且无其他已激活系统时才能激活系统
+	System(const std::string, const std::string);
 	//析构函数,保存并释放所有元素
 	~System();
 
@@ -39,6 +40,8 @@ public:
 	bool ChangeProblemInfo(const Problem*, const unsigned int);
 	//删除选题,如果该题已经有学生选择则不能删除,当且仅当系统激活时可用,若成功则返回真
 	bool DeleteProblem(const Problem*);//未完成
+	//根据列表中的顺序删除选题,如果该题已经有学生选择则不能删除,当且仅当系统激活时可用,若成功则返回真
+	bool DeleteProblem(const unsigned int);
 
 	//修改指定学生的学号、姓名,当且仅当系统激活时可用,若成功则返回真
 	bool ChangeStudentInfo(const Student*, const std::string, StuStringInfo);
@@ -50,9 +53,10 @@ public:
 	bool ChangeStudentInfo(const Student*, const Problem*);
 	//删除学生,当且仅当系统激活时可用,若成功则返回真
 	bool DeleteStudent(const Student*);//未完成
+	//根据列表中的顺序删除学生,当且仅当系统激活时可用,若成功则返回真
+	bool DeleteStudent(const unsigned int);
 
 	std::string OutputStu(OutputMethod);
 	std::string OutputProb(OutputMethod);
-	void Test();
 };
 

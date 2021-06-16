@@ -11,8 +11,9 @@ using namespace std;
 
 int main()
 {
-	System* sys = new System;
-	sys->Test();
+	System* sys = new System("123", "123");
+	sys->AddProblem("010", "课程设计选题系统", "艾勇", "暂无", 30);
+	cout << sys->OutputProb(OutputMethod::Complete) << endl;
 	delete sys;
 	return 0;
 	
