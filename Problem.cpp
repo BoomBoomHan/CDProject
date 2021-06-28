@@ -32,6 +32,11 @@ std::string Problem::GetTitle() const
 	return title;
 }
 
+std::string Problem::GetTeacher() const
+{
+	return teacherName;
+}
+
 unsigned int Problem::GetMaxNumber() const
 {
 	return maxNum;
@@ -72,5 +77,5 @@ std::string Problem::Output(OutputMethod method) const
 
 bool Problem::operator ==(const Problem& prob) const
 {
-	return (id == prob.GetID()) ? true : false;
+	return (id == prob.GetID() || title == prob.GetTitle()) ? true : false;
 }

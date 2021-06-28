@@ -26,6 +26,8 @@ public:
 	System(const std::string, const std::string);
 	//析构函数,保存并释放所有元素
 	~System();
+	//保存所有更改
+	void Save();
 
 	//通过--编号 标题 指导老师 要求 最大人数 已选人数--添加课设题目,当且仅当系统激活时可用,成功时返回真
 	bool AddProblem(const std::string, const std::string, const std::string, const std::string, const unsigned int, const unsigned int = 0u);
@@ -38,8 +40,12 @@ public:
 	bool ChangeProblemInfo(const Problem*, const std::string, ProbStringInfo);
 	//修改指定问题的最大选题人数,当且仅当系统激活时可用,若成功则返回真
 	bool ChangeProblemInfo(const Problem*, const unsigned int);
+	//根据编号获得目标选题,当且仅当系统激活时可用
+	Problem* FindProblem(const std::string);
+	//根据在列表中的顺序获得目标选题,当且仅当系统激活时可用
+	Problem* FindProblem(const unsigned int);
 	//删除选题,如果该题已经有学生选择则不能删除,当且仅当系统激活时可用,若成功则返回真
-	bool DeleteProblem(const Problem*);//未完成
+	bool DeleteProblem(const Problem*);
 	//根据列表中的顺序删除选题,如果该题已经有学生选择则不能删除,当且仅当系统激活时可用,若成功则返回真
 	bool DeleteProblem(const unsigned int);
 
@@ -51,12 +57,23 @@ public:
 	bool ChangeStudentInfo(const Student*, const unsigned int);
 	//修改指定学生的选题,当且仅当系统激活时可用,若成功则返回真
 	bool ChangeStudentInfo(const Student*, const Problem*);
+	//根据学号获得对应学生,当且仅当系统激活时可用
+	Student* FindStudent(const std::string);
+	//根据列表中的顺序获得对应学生,当且仅当系统激活时可用
+	Student* FindStudent(const unsigned int);
 	//删除学生,当且仅当系统激活时可用,若成功则返回真
-	bool DeleteStudent(const Student*);//未完成
+	bool DeleteStudent(const Student*);
 	//根据列表中的顺序删除学生,当且仅当系统激活时可用,若成功则返回真
 	bool DeleteStudent(const unsigned int);
 
+	//根据--编号 标题 指导老师名字--搜索选题,当且仅当系统激活时可正常搜索,返回值为选题的标题
+	std::string SearchProblem(const std::string);
+	//根据--学号 姓名 选择问题的编号--搜索学生,当且仅当系统激活时可正常搜索,返回值为学生的姓名
+	std::string SearchStudent(const std::string, const int);
+	//输出学生列表,当且仅当系统激活时可用
 	std::string OutputStu(OutputMethod);
+	//输出选题列表,当且仅当系统激活时可用
 	std::string OutputProb(OutputMethod);
+	//获取本系统是否激活
+	bool IsThisActive();
 };
-

@@ -42,6 +42,11 @@ std::string Student::GetID() const
 	return stuID;
 }
 
+std::string Student::GetName() const
+{
+	return name;
+}
+
 Problem* Student::GetProblem() const
 {
 	return selectedProblem;

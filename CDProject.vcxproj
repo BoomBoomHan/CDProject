@@ -203,6 +203,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="BBHList.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="FunctionLibrary.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="Library.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="FunctionLibrary.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Problem.cpp" />

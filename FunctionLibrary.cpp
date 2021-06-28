@@ -1,17 +1,17 @@
 #include "FunctionLibrary.h"
 #include <io.h>
 #include <direct.h>
+#include <sstream>
 
-//template<typename T>
-//std::string FunctionLibrary::ToString(T t)
-//{
-//	std::stringstream stream;
-//	std::string result;
-//	stream << T;
-//	stream >> result;
-//	stream.clear();
-//	return result;
-//}
+int FunctionLibrary::ToInt(const std::string str)
+{
+	int result;
+	std::stringstream stream;
+	stream << str;
+	stream >> result;
+	stream.clear();
+	return result;
+}
 
 std::string FunctionLibrary::CreateFolder(const std::string folderPath)
 {

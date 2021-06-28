@@ -18,6 +18,9 @@ public:
 		return result;
 	}
 
+	//将字符串转为整数
+	static int ToInt(const std::string);
+
 	//判断目标数是否在min和max间,第四,五个参数为是否是闭区间
 	template<typename T>
 	static bool IsInRange(const T target, const T min, const T max, const bool isLeftClosed = false, const bool isRightClosed = false)
@@ -29,16 +32,12 @@ public:
 
 	//在指定位置创建文件夹,返回值为路径名
 	static std::string CreateFolder(const std::string);
-
 	//打开指定输出文件,第三个参数为是否为ios::app,若成功则返回真
 	static bool OpenFile(std::ofstream&, const std::string, const bool = false);
-
 	//打开指定输入文件,若成功则返回真
 	static bool OpenFile(std::ifstream&, const std::string);
-
 	//关闭文件
 	static void CloseFile(std::ifstream&);
-
 	//关闭文件
 	static void CloseFile(std::ofstream&);
 };

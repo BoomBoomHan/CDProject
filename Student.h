@@ -26,6 +26,8 @@ public:
 	~Student();
 	//获取学号
 	std::string GetID() const;
+	//获取姓名
+	std::string GetName() const;
 	//获取题目
 	Problem* GetProblem() const;
 	//四种不同的输出方式,IgnoreID为只输出标题,Short为输出ID和标题,Complete为全部输出,Save为只输出关键信息
@@ -41,4 +43,3 @@ public:
 	//此友元函数是System类的成员函数
 	friend bool System::ChangeStudentInfo(const Student*, const Problem* b);
 };
-

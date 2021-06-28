@@ -36,6 +36,9 @@
     <ClInclude Include="Library.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Problem.cpp">
@@ -51,6 +54,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FunctionLibrary.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

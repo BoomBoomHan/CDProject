@@ -24,6 +24,8 @@ public:
 	std::string GetID() const;
 	//获取标题
 	std::string GetTitle() const;
+	//获取指导老师名字
+	std::string GetTeacher() const;
 	//获取最大选题人数
 	unsigned int GetMaxNumber() const;
 	//获取已选人数

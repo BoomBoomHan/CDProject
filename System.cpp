@@ -89,6 +89,15 @@ System::System(const std::string userName, const std::string password)
 
 System::~System()
 {
+	Save();
+	//关闭系统
+	isSystemActive = false;
+	delete studentList;
+	delete problemList;
+}
+
+void System::Save()
+{
 	std::ofstream outputFile;
 	std::string result;
 	//保存题目
@@ -114,10 +123,6 @@ System::~System()
 		result.clear();
 	}
 	FunctionLibrary::CloseFile(outputFile);
-	//关闭系统
-	isSystemActive = false;
-	delete studentList;
-	delete problemList;
 }
 
 void System::ERROR_SELF_REPAIR()
@@ -221,6 +226,31 @@ bool System::ChangeProblemInfo(const Problem* targetProb, const unsigned int max
 	return true;
 }
 
+Problem* System::FindProblem(const std::string _id)
+{
+	if (!isThisActive)
+	{
+		return nullptr;
+	}
+	for (unsigned int i = 0; i < probList.GetSize(); i++)
+	{
+		if (probList[i].GetID() == _id)
+		{
+			return &probList[i];
+		}
+	}
+	return FindProblem(FunctionLibrary::ToInt(_id) - 1);
+}
+
+Problem* System::FindProblem(const unsigned int index)
+{
+	if ((!isThisActive) || (!FunctionLibrary::IsInRange(index, 0u, probList.GetSize(), true, false)))
+	{
+		return nullptr;
+	}
+	return &probList[index];
+}
+
 bool System::DeleteProblem(const Problem* targetProb)
 {
 	if ((!isThisActive) || (!targetProb) || (!probList.GetSize()))
@@ -317,6 +347,31 @@ bool System::ChangeStudentInfo(const Student* targetStu, const Problem* prob)
 	return targetStu->setProblem(prob);
 }
 
+Student* System::FindStudent(const std::string _stuID)
+{
+	if (!isThisActive)
+	{
+		return nullptr;
+	}
+	for (unsigned int i = 0; i < stuList.GetSize(); i++)
+	{
+		if (stuList[i].GetID() == _stuID)
+		{
+			return &stuList[i];
+		}
+	}
+	return FindStudent(FunctionLibrary::ToInt(_stuID) - 1);
+}
+
+Student* System::FindStudent(const unsigned int index)
+{
+	if ((!isThisActive) || (!FunctionLibrary::IsInRange(index, 0u, stuList.GetSize(), true, false)))
+	{
+		return nullptr;
+	}
+	return &stuList[index];
+}
+
 bool System::DeleteStudent(const Student* targetStu)
 {
 	if ((!isThisActive) || (!targetStu) || (!stuList.GetSize()))
@@ -345,6 +400,93 @@ bool System::DeleteStudent(const unsigned int index)
 	return DeleteStudent(&stuList[index]);
 }
 
+std::string System::SearchProblem(const std::string str)
+{
+	BBHList<std::string> teacherList;
+	std::string result;
+	for (unsigned int i = 0; i < probList.GetSize(); i++)
+	{
+		const Problem& prob = probList[i];
+		const std::string id = prob.GetID();
+		const std::string title = prob.GetTitle();
+		const std::string teacherName = prob.GetTeacher();
+		if (id == str)
+		{
+			result += "编号为" + str + "的选题为:" + prob.Output(OutputMethod::IgnoreID);
+			break;
+		}
+		else if (title == str)
+		{
+			result += "标题为\"" + str + "\"的选题为:" + prob.Output(OutputMethod::Short);
+			break;
+		}
+		else if (teacherName == str)
+		{
+			teacherList.AddElement(prob.Output(OutputMethod::Short));
+		}
+	}
+	if (teacherList.GetSize())
+	{
+		result += "指导老师为" + str + "的选题有:\n";
+		for (unsigned int i = 0; i < teacherList.GetSize(); i++)
+		{
+			result += teacherList[i] + "\n";
+		}
+	}
+	if (result.empty())
+	{
+		result = "未找到与\"" + str + "\"有关的选题。\n";
+	}
+	return result;
+}
+
+std::string System::SearchStudent(const std::string str, const int method)
+{
+	std::string result;
+	BBHList<std::string> idList;
+	for (unsigned int i = 0; i < stuList.GetSize(); i++)
+	{
+		const Student& stu = stuList[i];
+		if (method == 1)
+		{
+			const std::string stuID = stu.GetID();
+			const std::string name = stu.GetName();
+			if (stuID == str)
+			{
+				result += "学号为" + str + "的学生为:" + stu.Output(OutputMethod::IgnoreID);
+				break;
+			}
+			else if (name == str)
+			{
+				result += "姓名为\"" + str + "\"的学生为:" + stu.Output(OutputMethod::Short);
+				break;
+			}
+		}
+		else if (method == 2)
+		{
+			const Problem* prob = stu.GetProblem();
+			const std::string id = (prob ? prob->GetID() : "");
+			if (id == str)
+			{
+				idList.AddElement(stu.Output(OutputMethod::Short) + "\n");
+			}
+		}
+	}
+	if (idList.GetSize())
+	{
+		result += "选题编号为" + str + "的学生有:\n";
+		for (unsigned int i = 0; i < idList.GetSize(); i++)
+		{
+			result += idList[i];
+		}
+	}
+	if (result.empty())
+	{
+		result = "未找到与\"" + str + "\"有关的学生。\n";
+	}
+	return result;
+}
+
 std::string System::OutputStu(OutputMethod method)
 {
 	if (stuList.GetSize() == 0)
@@ -352,9 +494,11 @@ std::string System::OutputStu(OutputMethod method)
 		return "空!";
 	}
 	std::string result;
+	const std::string anotherEnter = (method == OutputMethod::Complete) ? "\n" : "";
 	for (unsigned int i = 0; i < studentList->GetSize(); i++)
 	{
-		result += stuList[i].Output(method) + "\n\n";
+		result += (method == OutputMethod::Short || method == OutputMethod::IgnoreID) ? (FunctionLibrary::ToString(i + 1) + ":") : "";
+		result += stuList[i].Output(method) + "\n" + anotherEnter;
 	}
 	return result;
 }
@@ -369,7 +513,13 @@ std::string System::OutputProb(OutputMethod method)
 	const std::string anotherEnter = (method == OutputMethod::Complete) ? "\n" : "";
 	for (unsigned int i = 0; i < problemList->GetSize(); i++)
 	{
+		result += (method == OutputMethod::Short || method == OutputMethod::IgnoreID) ? (FunctionLibrary::ToString(i + 1) + ":") : "";
 		result += probList[i].Output(method) + "\n" + anotherEnter;
 	}
 	return result;
+}
+
+bool System::IsThisActive()
+{
+	return isThisActive;
 }
