@@ -8,6 +8,7 @@ Application::Application()
 	:sys(nullptr)
 	//commands{ &command1,&command2 ,&command3 ,&Application::command4 ,&Application::command5 ,&Application::command6 ,&Application::command7 ,&Application::command8 ,&Application::command0 }
 {
+	commandList.AddElement(&Application::command0, false);
 	commandList.AddElement(&Application::command1, false);
 	commandList.AddElement(&Application::command2, false);
 	commandList.AddElement(&Application::command3, false);
@@ -18,7 +19,7 @@ Application::Application()
 	commandList.AddElement(&Application::command8, false);
 	commandList.AddElement(&Application::command9, false);
 	commandList.AddElement(&Application::command10, false);
-	commandList.AddElement(&Application::command0, false);
+
 	Login();
 }
 
@@ -91,14 +92,10 @@ void Application::Menu()
 	{
 		std::cout << "无效指令,请重新输入!";
 	}
-	else if (commandNumber == 0)
-	{
-		command = commandList[listSize - 1];
-	}
 	else
 	{
 		system("cls");
-		command = commandList[commandNumber - 1];
+		command = commandList[commandNumber];
 	}
 	if (command)
 	{
@@ -232,7 +229,7 @@ void Application::command3()
 			std::cout << "无效指令!即将返回菜单!";
 			return;
 		}
-		std::cout << (isSuccess ? "修改成功!" : "修改失败!新的最大选题人数小于当前已选人数!");
+		std::cout << (isSuccess ? "修改成功!" : "修改失败!输入内容有空白或新的最大选题人数小于当前已选人数!");
 	}
 	AUTO_SAVE();
 }
@@ -305,7 +302,7 @@ void Application::command4()
 			std::cout << "无效指令!即将返回菜单!";
 			return;
 		}
-		std::cout << (isSuccess ? "修改成功!" : "修改失败!请检查输入是否合法!");
+		std::cout << (isSuccess ? "修改成功!" : "修改失败!输入内容有空白或新的题目已满!");
 	}
 	AUTO_SAVE();
 }
@@ -319,7 +316,7 @@ void Application::command5()
 	std::cin.get();
 	index--;
 	const bool isSuccess = sys->DeleteProblem(index);
-	std::cout << (isSuccess ? "删除成功!" : "删除失败!");
+	std::cout << (isSuccess ? "删除成功!" : "删除失败,输入了错误的序号或该选题已有学生选择!");
 	AUTO_SAVE();
 }
 
@@ -332,7 +329,7 @@ void Application::command6()
 	std::cin.get();
 	index--;
 	const bool isSuccess = sys->DeleteStudent(index);
-	std::cout << (isSuccess ? "删除成功!" : "删除失败!");
+	std::cout << (isSuccess ? "删除成功!" : "删除失败,输入了错误的序号!");
 	AUTO_SAVE();
 }
 
